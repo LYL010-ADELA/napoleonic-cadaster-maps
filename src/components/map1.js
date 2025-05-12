@@ -7,7 +7,6 @@ if (L === undefined) console.error("L is undefined");
 import "../plugins/leaflet-heat.js";
 
 // merge the two list of objects using the "geometry_id" field:
-
 function geometryRegistryMap(registryData) {
     const geometryRegistryMap = new Map();
     registryData.forEach(entry => {
@@ -20,6 +19,19 @@ function geometryRegistryMap(registryData) {
     return geometryRegistryMap;
 }
 
+
+let exclude_cols = ["geometry_id", "unique_id"];
+
+function formatRegistryEntryToHTML(entry) {
+    let html = "<div>";
+    for (const [key, value] of Object.entries(entry)) {
+        if (!exclude_cols.includes(key) && value !== null) {    
+            html += `<strong>${key}:</strong> ${value}<br>`;
+        } 
+    }
+    html += "</div>";
+    return html;
+}
 
 function pythonListStringToList(pythonListString) {
     if (typeof pythonListString !== 'string') {
@@ -136,6 +148,22 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
             // }));  
             lg.addLayer(featureLayer);
         }    
+
+        let allRegistryEntries = registryMap.get(feature.properties.geometry_id);
+        let html = "<div>";
+        if (allRegistryEntries){
+            if(allRegistryEntries.length > 1) {
+                allRegistryEntries.forEach(entry => {
+                    html += formatRegistryEntryToHTML(entry) + "<hr>"; 
+                });
+            }
+            else {
+                html += formatRegistryEntryToHTML(allRegistryEntries[0]);
+            }
+        }
+        html += "</div>";
+        // Add a popup to the feature layer
+        featureLayer.bindPopup(html);
     }
     // Store map from geom_id -> leaflet layer instance
     const featureLayersMap = new Map();
