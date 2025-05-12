@@ -1,5 +1,5 @@
 ---
-title: Napoleonic Cadaster
+title: Napoleonic Cadaster - property type
 toc: false
 ---
 
@@ -44,5 +44,5 @@ const ownMapComponents = createMapAndLayers("map-container-own-type", geojson, r
 
 ```js
 // Call the creation function and store the results
-const ownMapComponents = createMapAndLayers("map-container-func-type", geojson, registre, 'qualities', false);
+const funMapComponents = createMapAndLayers("map-container-func-type", geojson, registre, 'qualities', false);
 ```

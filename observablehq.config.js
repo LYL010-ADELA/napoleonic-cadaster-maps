@@ -13,6 +13,7 @@ export default {
         // {name: "Dashboard", path: "/example-dashboard"},
         // {name: "Report", path: "/example-report"},
         // {name: "Weather", path: "/weather"},
+        {name: "Heatmap of parcels' portions", path: "/cadastre-porzione-heatmap"},
         {name: "Ownership types and parcels functions", path: "/cadastre-property-type"},
       ]
     }
