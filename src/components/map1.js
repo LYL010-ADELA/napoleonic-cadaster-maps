@@ -1,6 +1,6 @@
 // Explicit import of leaflet to avoid issues with the Leaflet.heat plugin
 import L from "npm:leaflet";
-import {geometryRegistryMap, formatRegistryEntryToHTML, pythonListStringToList} from "./common.js";
+import {geometryRegistryMap, registryListToHTML, pythonListStringToList} from "./common.js";
 
 if (L === undefined) console.error("L is undefined");
 
@@ -10,7 +10,7 @@ import "../plugins/leaflet-heat.js";
 
 // Create Map and Layer - Runs Once
 export function createMapAndLayers(mapContainer, geojsonData, registryData, registryField, enabledLayer) {
-    const map = L.map(mapContainer, {minZoom: 0, maxZoom:25}).setView([45.4382745, 12.3433387 ], 14);
+    const map = L.map(mapContainer, {minZoom: 0, maxZoom:18}).setView([45.4382745, 12.3433387 ], 14);
 
     const osmLayer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -87,15 +87,7 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
         }    
 
         let allRegistryEntries = registryMap.get(feature.properties.geometry_id);
-        let html = "<div>";
-        if (allRegistryEntries && allRegistryEntries.length > 0) {
-            // Doing it that way so the delimitation line is properly displayed.
-            html += formatRegistryEntryToHTML(allRegistryEntries[0]);
-            for (let i = 1; i < allRegistryEntries.length; i++) {
-                html += "<hr>" + formatRegistryEntryToHTML(allRegistryEntries[i]);
-            }
-        }
-        html += "</div>";
+        let html = registryListToHTML(allRegistryEntries);
         // Add a popup to the feature layer
         featureLayer.bindPopup(html, {'maxWidth':'500','maxHeight':'350','minWidth':'350'});
     }
@@ -110,5 +102,3 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
     // Return the the map instance, the layer group, and the mapping
     return { map, layerControl, geoJsonLayer, featureLayersMap, mapLayerGroups };
 }
-
-// Call the creation function and store the results

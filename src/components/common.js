@@ -27,12 +27,25 @@ export function geometryRegistryMap(registryData) {
 
 let EXCLUDE_COLS = ["geometry_id", "unique_id"];
 
-export function formatRegistryEntryToHTML(entry) {
+function formatRegistryEntryToHTML(entry) {
     let html = "<div>";
     for (const [key, value] of Object.entries(entry)) {
         if (!EXCLUDE_COLS.includes(key) && value !== null) {    
             html += `<strong>${key}:</strong> ${value}<br>`;
         } 
+    }
+    html += "</div>";
+    return html;
+}
+
+export function registryListToHTML(allRegistryEntries) {
+    let html = "<div>";
+    if (allRegistryEntries && allRegistryEntries.length > 0) {
+        // Doing it that way so the delimitation line is properly displayed.
+        html += formatRegistryEntryToHTML(allRegistryEntries[0]);
+        for (let i = 1; i < allRegistryEntries.length; i++) {
+            html += "<hr>" + formatRegistryEntryToHTML(allRegistryEntries[i]);
+        }
     }
     html += "</div>";
     return html;
