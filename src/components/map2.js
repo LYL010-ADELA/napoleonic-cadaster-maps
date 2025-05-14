@@ -6,16 +6,16 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "../plugins/leaflet-heat.js";
-import { geometryRegistryMap, registryListToHTML } from "./common.js";
+import { geometryRegistryMap, registryListToHTML, genereateBaseSommarioniBgLayers } from "./common.js";
 
 function getColor(d) {
-    return d > 7 ? '#800026' :
-           d > 6  ? '#BD0026' :
-           d > 5  ? '#E31A1C' :
-           d > 4  ? '#FC4E2A' :
-           d > 3   ? '#FD8D3C' :
-           d > 2   ? '#FEB24C' :
-           d > 1   ? '#FED976' :
+    return d > 8 ? '#800026' :
+           d > 7  ? '#BD0026' :
+           d > 6  ? '#E31A1C' :
+           d > 5  ? '#FC4E2A' :
+           d > 4   ? '#FD8D3C' :
+           d > 3   ? '#FEB24C' :
+           d > 2   ? '#FED976' :
                       '#FFEDA0';
 }
 
@@ -48,25 +48,20 @@ function countPorzioneFromeQualityFieldInRegistryList(registryEntryList) {
 export function createPorzioneHeatMap(mapContainer, geojsonData, registryData) {
     const map = L.map(mapContainer, {minZoom: 0, maxZoom:18}).setView([45.4382745, 12.3433387 ], 14);
 
-    const osmLayer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    });
 
-    const cartoLayer = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-
-    const sommarioniBoardLayer = L.tileLayer("https://geo-timemachine.epfl.ch/geoserver/www/tilesets/venice/sommarioni/{z}/{x}/{y}.png",{
-         attribution: '&copy; <a href="https://timeatlas.eu/">Time Atlas@EPFL</a>'
-    }).addTo(map);
 
     // Crate a control to switch between layers
     const layerControl = L.control.layers().addTo(map);
-
+    const bgLayerList = genereateBaseSommarioniBgLayers();
+    for( let [key, value] of Object.entries(bgLayerList)){
+        layerControl.addBaseLayer(value, key);
+    } 
+    bgLayerList["Cadastral Board"].addTo(map);
     // Add the OSM and Carto layers to the control
-    layerControl.addBaseLayer(osmLayer, "OSM");
-    layerControl.addBaseLayer(cartoLayer, "Carto");
-    layerControl.addBaseLayer(sommarioniBoardLayer, "Cadastral Board");
+    // layerControl.addBaseLayer(noLayer, "No background");
+    // layerControl.addBaseLayer(osmLayer, "OpenStreetMap");
+    // layerControl.addBaseLayer(cartoLayer, "Carto");
+    // layerControl.addBaseLayer(sommarioniBoardLayer, "Cadastral Board");
 
     let registryMap = geometryRegistryMap(registryData);
     //filtering the data to keep only geometries referenced in the registry (i.e. the ones having a geometry_id value)
@@ -78,7 +73,7 @@ export function createPorzioneHeatMap(mapContainer, geojsonData, registryData) {
         const porzioneCount = countPorzioneFromeQualityFieldInRegistryList(registryEntries);
         feature.properties["porzione_count"] = porzioneCount;
         return feature;
-    });
+    }).filter(feature => feature.properties.porzione_count > 0);
 
 
     function highlightFeature(e) {
@@ -120,7 +115,7 @@ export function createPorzioneHeatMap(mapContainer, geojsonData, registryData) {
 
     legend.onAdd = function (map) {
         let div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 1, 2, 3, 4, 5, 6, 7];
+            grades = [1, 2, 3, 4, 5, 6, 7, 8];
 
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < grades.length; i++) {

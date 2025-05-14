@@ -38,6 +38,28 @@ function formatRegistryEntryToHTML(entry) {
     return html;
 }
 
+export function genereateBaseSommarioniBgLayers(){
+    const noLayer = L.tileLayer("", {
+        attribution: ''
+    });
+    const osmLayer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+    const cartoLayer = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+    const sommarioniBoardLayer = L.tileLayer("https://geo-timemachine.epfl.ch/geoserver/www/tilesets/venice/sommarioni/{z}/{x}/{y}.png",{
+            attribution: '&copy; <a href="https://timeatlas.eu/">Time Atlas@EPFL</a>'
+    });
+
+    return {
+        "No background": noLayer,
+        "OpenStreetMap": osmLayer,
+        "Carto": cartoLayer,
+        "Cadastral Board": sommarioniBoardLayer
+    };
+}
+
 export function registryListToHTML(allRegistryEntries) {
     let html = "<div>";
     if (allRegistryEntries && allRegistryEntries.length > 0) {

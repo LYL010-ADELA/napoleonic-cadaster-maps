@@ -1,6 +1,6 @@
 // Explicit import of leaflet to avoid issues with the Leaflet.heat plugin
 import L from "npm:leaflet";
-import {geometryRegistryMap, registryListToHTML, pythonListStringToList} from "./common.js";
+import {geometryRegistryMap, registryListToHTML, pythonListStringToList, genereateBaseSommarioniBgLayers} from "./common.js";
 
 if (L === undefined) console.error("L is undefined");
 
@@ -12,26 +12,15 @@ import "../plugins/leaflet-heat.js";
 export function createMapAndLayers(mapContainer, geojsonData, registryData, registryField, enabledLayer) {
     const map = L.map(mapContainer, {minZoom: 0, maxZoom:18}).setView([45.4382745, 12.3433387 ], 14);
 
-    const osmLayer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    });
-
-    const cartoLayer = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-
-    const sommarioniBoardLayer = L.tileLayer("https://geo-timemachine.epfl.ch/geoserver/www/tilesets/venice/sommarioni/{z}/{x}/{y}.png",{
-         attribution: '&copy; <a href="https://timeatlas.eu/">Time Atlas@EPFL</a>'
-    }).addTo(map);
-
     // Crate a control to switch between layers
     const layerControl = L.control.layers().addTo(map);
 
-    // Add the OSM and Carto layers to the control
-    layerControl.addBaseLayer(osmLayer, "OSM");
-    layerControl.addBaseLayer(cartoLayer, "Carto");
-    layerControl.addBaseLayer(sommarioniBoardLayer, "Cadastral Board");
-    
+    // Add all default layers to the map.
+    const bgLayerList = genereateBaseSommarioniBgLayers();
+    for( let [key, value] of Object.entries(bgLayerList)){
+        layerControl.addBaseLayer(value, key);
+    } 
+    bgLayerList["Cadastral Board"].addTo(map);
     let registryMap = geometryRegistryMap(registryData);
     //filtering the data to keep only geometries referenced in the registry (i.e. the ones having a geometry_id value)
     let feats = geojsonData.features.filter(feature => feature.properties.geometry_id)
@@ -79,10 +68,6 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
                 mapLayerGroups[value] = lg;
             }
 
-            //add the feature to the layer
-            // lg.addLayer(featureLayer.setStyle({
-            //     color: randomCssColor(value)
-            // }));  
             lg.addLayer(featureLayer);
         }    
 
