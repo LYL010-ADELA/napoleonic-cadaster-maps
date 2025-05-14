@@ -15,6 +15,7 @@ export default {
         // {name: "Weather", path: "/weather"},
         {name: "Heatmap of parcels' portions", path: "/cadastre-porzione-heatmap"},
         {name: "Ownership types and parcels functions", path: "/cadastre-property-type"},
+        {name: "Average surface of Casa per parish", path: "/parish-average-casa-size"},
       ]
     }
   ],
