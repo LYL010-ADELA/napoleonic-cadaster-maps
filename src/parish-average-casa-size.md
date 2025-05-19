@@ -19,7 +19,7 @@ import {createParishCasaAverageSurfaceHeatMap} from "./components/map3.js";
 ```
 
 # Napoleonic Cadaster - Amount of portioned parcels.
-The heatmap display the amount of time "porzion" appeared in the registries associated to the parcels delimitation
+The heatmap display the average area of parcels that have the "casa" function per parish delimitation.
 
 ```js
 const parishData = FileAttachment("./data/1740_redrawn_parishes_cleaned_wikidata_standardised.geojson").json();
@@ -45,7 +45,7 @@ const table = Inputs.table(porzioneMapComponents.tableData, {
     header: {
         name: "Parish Name",
         average_surface: "Average parcel area (m2)",
-        median_surface: "Media parcel area (m2)"
+        median_surface: "Median parcel area (m2)"
     },
     format: {
        average_surface: (x) => x.toFixed(1),

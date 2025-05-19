@@ -79,7 +79,7 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
     // Store map from geom_id -> leaflet layer instance
     const featureLayersMap = new Map();
     const geoJsonLayer = L.geoJSON(geojsonData, {onEachFeature: onEachFeature});
-    for (const [key, value] of Object.entries(mapLayerGroups)) {    
+    for (const [key, value] of Object.entries(mapLayerGroups).sort((a, b) => a[0].localeCompare(b[0]))) {
         layerControl.addOverlay(value, key);
     }
     // layerControl.addOverlay(geoJsonLayer, "Cadastral");
