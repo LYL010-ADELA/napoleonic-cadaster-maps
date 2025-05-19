@@ -22,8 +22,8 @@ import {createPorzioneHeatMap} from "./components/map2.js";
 The heatmap display the amount of time "porzion" appeared in the registries associated to the parcels delimitation
 
 ```js
-const geojson = FileAttachment("./data/sommarioni_geometries_internal_20250318.geojson").json();
-const registre = FileAttachment("./data/sommarioni_standardisation_pre_finished_20250508.json").json();
+const geojson = FileAttachment("./data/venice_1808_landregister_geometries.geojson").json();
+const registre = FileAttachment("./data/venice_1808_landregister_textual_entries.json").json();
 ```
 
 <!-- Create the map container -->

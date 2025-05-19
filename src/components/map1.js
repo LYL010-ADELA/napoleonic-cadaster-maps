@@ -23,7 +23,7 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
     bgLayerList["Cadastral Board"].addTo(map);
     let registryMap = geometryRegistryMap(registryData);
     //filtering the data to keep only geometries referenced in the registry (i.e. the ones having a geometry_id value)
-    let feats = geojsonData.features.filter(feature => feature.properties.geometry_id)
+    let feats = geojsonData.features.filter(feature => feature.properties.geometry_id && feature.properties.parcel_number)
     // then fetching the value of "ownership_types" from the registry and adding them to the properties of the features
     geojsonData.features = feats.map(feature => {
         const geometry_id = String(feature.properties.geometry_id);

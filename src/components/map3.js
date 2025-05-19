@@ -8,15 +8,24 @@ if (L === undefined) console.error("L is undefined");
 import "../plugins/leaflet-heat.js";
 import { geometryRegistryMap, registryListToHTML, genereateBaseSommarioniBgLayers, pythonListStringToList } from "./common.js";
 
+let gradePointsColors = [
+    // [2000, '#800026'],
+    [1000, '#BD0026'],
+    [500 , '#E31A1C'],
+    [400, '#FC4E2A'],
+    [300, '#FD8D3C'],
+    [200, '#FEB24C'],
+    [100, '#FED976'],
+    [0,'#FFEDA0']
+];
+
 function getColor(d) {
-    return d > 15000 ? '#800026' :
-           d > 10000  ? '#BD0026' :
-           d > 8000  ? '#E31A1C' :
-           d > 5000  ? '#FC4E2A' :
-           d > 3000   ? '#FD8D3C' :
-           d > 2000   ? '#FEB24C' :
-           d > 1000   ? '#FED976' :
-                      '#FFEDA0';
+    for (let i = 0; i < gradePointsColors.length; i++) {
+        if (d > gradePointsColors[i][0]) {
+            return gradePointsColors[i][1];
+        }
+    }
+    return '#FFEDA0';
 }
 
 function style(feature) {
@@ -40,6 +49,20 @@ function average(l) {
     }
     return count > 0 ? sum / count : 0;
 }
+
+function median(l) {
+    if (l.length === 0) {
+        return 0;
+    }
+    l.sort((a, b) => a - b);
+    const mid = Math.floor(l.length / 2);
+    if (l.length % 2 === 0) {
+        return (l[mid - 1] + l[mid]) / 2;
+    } else {
+        return l[mid];
+    }
+}
+
 
 function displyOnlyOneValueAftreComma(value) {
     if (value) {
@@ -66,39 +89,44 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
 
     let registryMap = geometryRegistryMap(registryData);
     //filtering the data to keep only geometries referenced in the registry (i.e. the ones having a geometry_id value)
-    let feats = parcelData.features.filter(feature => feature.properties.geometry_id)
+    let feats = parcelData.features.filter(feature => feature.properties.geometry_id);
+
     // then fetching the surface of all the geometries referenced in the registry and adding them to the properties of the features
-    parcelData.features = feats.map(feature => {
+    parcelData.features = feats.filter(feature => {
         const geometry_id = String(feature.properties.geometry_id);
         const registryEntries = registryMap.get(geometry_id);
-        feature.properties['surface'] = 0;
+        let isCasa = false;
         if (registryEntries) {
-            let areas = [];
             registryEntries.forEach(entry => {
                 if (entry["qualities"]) {
                     let converted_vals = pythonListStringToList(entry["qualities"]);
                     for (let i = 0; i < converted_vals.length; i++) {
                         let value = converted_vals[i];
                         if (value == 'CASA') {
-                            areas.push(entry["area"]);
+                           isCasa = true; 
                         }
-                    }
-                    if (areas.length > 0) {
-                        feature.properties['surface'] = average(areas);
                     }
                 }
             });
         }
-        return feature;
-    }).filter(feature => feature.properties.surface > 0);
+        return isCasa;
+    });
+
 
     parishData.features = parishData.features.map(feature => {
         const parishName = feature.properties.NAME;
-        const parcelWithParish = parcelData.features.filter(parcel => parcel.properties.parish_standardized === parishName);
-        const averageSurface = average(parcelWithParish.map(parcel => parcel.properties.surface));
+        const parcelWithParish = parcelData.features.filter(parcel => parcel.properties.parish_standardised === parishName);
+        // groupby all the parcelData with the same greometry_id, summing all the area, and then doing the average and median
+        const parcelGroups = Object.groupBy(parcelWithParish, parcel => parcel.properties.geometry_id);
+        const parcelsArea = Object.values(parcelGroups).map(group => {return group.reduce((acc, parcel) => acc + parcel.properties.area, 0.0)});
+        const averageSurface = average(parcelsArea);
+        const medianSurface = median(parcelsArea);
         feature.properties['average_surface'] = averageSurface;
+        feature.properties['median_surface'] = medianSurface;
         return feature;
     });
+
+    parishData.features = parishData.features.filter(feature =>  feature.properties.average_surface > 0);
 
     function highlightFeature(e) {
         var layer = e.target;
@@ -115,30 +143,44 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
     // define the geoJsonLayer variable outside the function
     // so that it can be accessed in the resetHighlight function
     // and the resetHighlight function can be called from the onEachFeature function
-    let geoJsonLayer = null;
+    let geoJsonLayerAverage = null;
+    let geoJsonLayerMedian = null;
+    let tableData = structuredClone(parishData).features.map(feature => {
+        return {
+            name: feature.properties.NAME,
+            average_surface: feature.properties.average_surface,
+            median_surface: feature.properties.median_surface
+        };
+    });
     function resetHighlight(e) {
-        geoJsonLayer.resetStyle(e.target);
+        geoJsonLayerAverage.resetStyle(e.target);
     }
 
-    geoJsonLayer = L.geoJSON(parishData, {style: style, onEachFeature: (feature, featureLayer) => {
+    geoJsonLayerAverage = L.geoJSON(parishData, {style: style, onEachFeature: (feature, featureLayer) => {
         featureLayer.on({
             mouseover: highlightFeature,
             mouseout: resetHighlight
         })
-
-        let allRegistryEntries = registryMap.get(feature.properties.geometry_id);
-        let html = registryListToHTML(allRegistryEntries);
         // Add a popup to the feature layerr
         featureLayer.bindPopup("<div>"+feature.properties.NAME+"</div>", {'maxWidth':'500','maxHeight':'350','minWidth':'50'});
         featureLayer.bindTooltip("<div class='popup'>"+displyOnlyOneValueAftreComma(feature.properties.average_surface)+"m2</div>");
     }}).addTo(map);
+
+    // geoJsonLayerMedian = L.geoJSON(parishData, {style: style, onEachFeature: (feature, featureLayer) => {
+    //     featureLayer.on({
+    //         mouseover: highlightFeature,
+    //         mouseout: resetHighlight
+    //     })
+    //     featureLayer.bindPopup("<div>"+feature.properties.NAME+"</div>", {'maxWidth':'500','maxHeight':'350','minWidth':'50'});
+    //     featureLayer.bindTooltip("<div class='popup'>"+displyOnlyOneValueAftreComma(feature.properties.median_surface)+"m2</div>");
+    // }}).addTo(map);
 
 
     let legend = L.control({position: 'bottomright'});
 
     legend.onAdd = function (map) {
         let div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 1000, 2000, 3000, 5000, 8000, 10000, 15000];
+            grades = gradePointsColors.map(color => color[0]).reverse();
 
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < grades.length; i++) {
@@ -193,5 +235,5 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
     `);
 
     // Return the the map instance, the layer group, and the mapping
-    return { map, layerControl, geoJsonLayer };
+    return { map, layerControl, geoJsonLayerAverage, tableData }
 }

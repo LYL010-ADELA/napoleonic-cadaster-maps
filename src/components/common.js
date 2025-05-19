@@ -79,11 +79,14 @@ export function pythonListStringToList(pythonListString) {
     }
     // Remove the leading and trailing brackets
     pythonListString = pythonListString.trim().slice(1, -1);
-    // Split the string by commas, but only if they are not inside quotes
-    const regex = /,(?=(?:(?:[^'"]*['"][^'"]*['"])*[^'"]*$)(?:(?:[^"']*["'][^"']*["'])*[^"']*$))/g;
+    // remove all whitespaces
+    pythonListString = pythonListString.replace(/\s+/g, '');
+    // Split the string by commas
+    // Use a regex to split by commas
+    const regex = /(?<!\w),(?!\w)/;
     const items = pythonListString.split(regex);
     // Remove leading and trailing whitespace from each item
-    const cleanedItems = items.map(item => item.trim());
+    const cleanedItems = items.map(item => item.trim().replace(/^\s+|\s+$/g, ''));
     // Remove leading and trailing quotes from each item
     const finalItems = cleanedItems.map(item => {
         if (item.startsWith("'") && item.endsWith("'")) {

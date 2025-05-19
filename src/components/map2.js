@@ -48,8 +48,6 @@ function countPorzioneFromeQualityFieldInRegistryList(registryEntryList) {
 export function createPorzioneHeatMap(mapContainer, geojsonData, registryData) {
     const map = L.map(mapContainer, {minZoom: 0, maxZoom:18}).setView([45.4382745, 12.3433387 ], 14);
 
-
-
     // Crate a control to switch between layers
     const layerControl = L.control.layers().addTo(map);
     const bgLayerList = genereateBaseSommarioniBgLayers();
@@ -57,15 +55,10 @@ export function createPorzioneHeatMap(mapContainer, geojsonData, registryData) {
         layerControl.addBaseLayer(value, key);
     } 
     bgLayerList["Cadastral Board"].addTo(map);
-    // Add the OSM and Carto layers to the control
-    // layerControl.addBaseLayer(noLayer, "No background");
-    // layerControl.addBaseLayer(osmLayer, "OpenStreetMap");
-    // layerControl.addBaseLayer(cartoLayer, "Carto");
-    // layerControl.addBaseLayer(sommarioniBoardLayer, "Cadastral Board");
 
     let registryMap = geometryRegistryMap(registryData);
     //filtering the data to keep only geometries referenced in the registry (i.e. the ones having a geometry_id value)
-    let feats = geojsonData.features.filter(feature => feature.properties.geometry_id)
+    let feats = geojsonData.features.filter(feature => feature.properties.geometry_id && feature.properties.parcel_number)
     // then fetching the value of "ownership_types" from the registry and adding them to the properties of the features
     geojsonData.features = feats.map(feature => {
         const geometry_id = String(feature.properties.geometry_id);

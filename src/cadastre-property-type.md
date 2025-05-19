@@ -24,8 +24,8 @@ To toggle the parcel according to their types, use the layer control button on t
 ## Type of ownership
 
 ```js
-const geojson = FileAttachment("./data/sommarioni_geometries_internal_20250318.geojson").json();
-const registre = FileAttachment("./data/sommarioni_standardisation_pre_finished_20250508.json").json();
+const geojson = FileAttachment("./data/venice_1808_landregister_geometries.geojson").json();
+const registre = FileAttachment("./data/venice_1808_landregister_textual_entries.json").json();
 ```
 
 <div id="map-container-own-type" style="height: 750px; margin: 1em 0 2em 0;"></div>

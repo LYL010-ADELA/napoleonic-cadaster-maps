@@ -22,18 +22,36 @@ import {createParishCasaAverageSurfaceHeatMap} from "./components/map3.js";
 The heatmap display the amount of time "porzion" appeared in the registries associated to the parcels delimitation
 
 ```js
-const parcelData = FileAttachment("./data/sommarioni_geometries_internal_20250318.geojson").json();
 const parishData = FileAttachment("./data/1740_redrawn_parishes_cleaned_wikidata_standardised.geojson").json();
-const registre = FileAttachment("./data/sommarioni_standardisation_pre_finished_20250508.json").json();
+const parcelData = FileAttachment("./data/venice_1808_landregister_geometries.geojson").json();
+const registre = FileAttachment("./data/venice_1808_landregister_textual_entries.json").json();
 ```
 
 <!-- Create the map container -->
-<div id="map-container-porzione-hm" style="height: 750px; margin: 1em 0 2em 0;"></div>
+<div id="map-container-casa-average-size-hm" style="height: 750px; margin: 1em 0 2em 0;"></div>
 
 ```js
 // Call the creation function and store the results
-const porzioneMapComponents = createParishCasaAverageSurfaceHeatMap("map-container-porzione-hm", parcelData, registre, parishData);
+const porzioneMapComponents = createParishCasaAverageSurfaceHeatMap("map-container-casa-average-size-hm", parcelData, registre, parishData);
 ```
 
 ### Ranking
-TODO
+
+<!-- Create the tanble container -->
+<div id="map-container-porzione-hm" style="height: 1200px; margin: 1em 0 2em 0;"></div>
+
+```js
+const table = Inputs.table(porzioneMapComponents.tableData, {
+    header: {
+        name: "Parish Name",
+        average_surface: "Average parcel area (m2)",
+        median_surface: "Media parcel area (m2)"
+    },
+    format: {
+       average_surface: (x) => x.toFixed(1),
+       median_surface: (x) => x.toFixed(1),
+    }, 
+    select: false
+});
+document.getElementById("map-container-porzione-hm").append(table)
+```
