@@ -76,16 +76,6 @@ function displyOnlyOneValueAftreComma(value) {
 }
 
 
-export function highlightFeature(layer) {
-    layer.setStyle({
-        weight: 5,
-        color: '#FFF',
-        dashArray: '',
-        fillOpacity: 0.7
-    });
-
-    layer.bringToFront();
-}
 
 // Create Map and Layer - Runs Once
 export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, registryData, parishData) {
@@ -144,7 +134,6 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
     // so that it can be accessed in the resetHighlight function
     // and the resetHighlight function can be called from the onEachFeature function
     let geoJsonLayerAverage = null;
-    let geoJsonLayerMedian = null;
     let tableData = structuredClone(parishData).features.map(feature => {
         return {
             name: feature.properties.NAME,
@@ -152,15 +141,30 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
             median_surface: feature.properties.median_surface
         };
     });
+    
     function resetHighlight(e) {
         geoJsonLayerAverage.resetStyle(e.target);
     }
+    function highlightFeature(e) {
+        // so that highlight set by the row from the table ranking also gets resetted.
+        geoJsonLayerAverage.resetStyle();
+        let layer = e.target;
+        layer.setStyle({
+            weight: 5,
+            color: '#FFF',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        layer.bringToFront();
+    }
+    
     let parishNameLayerMap = new Map();
 
     geoJsonLayerAverage = L.geoJSON(parishData, {style: style, onEachFeature: (feature, featureLayer) => {
         featureLayer.on({
-            mouseover: (e) => highlightFeature(e.target),
-            mouseout: resetHighlight
+            mouseover: highlightFeature,
+            mouseout: resetHighlight // still necessary to avoid the parish still being highlighted when the mouse is out of the map
         })
         parishNameLayerMap.set(feature.properties.NAME, featureLayer);
         // Add a popup to the feature layerr

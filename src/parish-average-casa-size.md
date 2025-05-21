@@ -17,7 +17,7 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "./plugins/leaflet-heat.js";
-import {createParishCasaAverageSurfaceHeatMap, highlightFeature } from "./components/map3.js";
+import {createParishCasaAverageSurfaceHeatMap } from "./components/map3.js";
 ```
 
 # Napoleonic Cadaster - Average size of "CASA" parcel per parish.
@@ -36,15 +36,23 @@ const registre = FileAttachment("./data/venice_1808_landregister_textual_entries
 // Call the creation function and store the results
 const porzioneMapComponents = createParishCasaAverageSurfaceHeatMap("map-container-casa-average-size-hm", parcelData, registre, parishData);
 
-// for debugging purpose, keep in mind to remove it after dev
+// affecting values to the window is the easiest way to break the observable sandbox and make code available in the plain JS context of the webpage.
 window.highlightFeature = (name) => {
     porzioneMapComponents.geoJsonLayerAverage.resetStyle();
+    // for some reason, observable does not let me set intermediat variable, so all action on layer has to call the layer from the hashMap again.
     porzioneMapComponents.map.flyTo(porzioneMapComponents.parishNameLayerMap.get(name).getBounds().getCenter(), 15.4);
-    highlightFeature(porzioneMapComponents.parishNameLayerMap.get(name));
+    porzioneMapComponents.parishNameLayerMap.get(name).setStyle({
+        weight: 5,
+        color: '#FFF',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+    porzioneMapComponents.parishNameLayerMap.get(name).bringToFront();
+    porzioneMapComponents.parishNameLayerMap.get(name).openPopup() 
+    // document.getElementById('map-container-casa-average-size-hm').scrollIntoView({"behavior":"smooth"});
+
 };
 
-window.messageChat = porzioneMapComponents.geoJsonLayerAverage;
-// can be useful: .openPopup() 
 ```
 
 ### Ranking
