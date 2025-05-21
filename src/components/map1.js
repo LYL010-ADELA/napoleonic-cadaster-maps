@@ -53,6 +53,9 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
         let values = feature.properties[registryField];
         for (let i = 0; i < values.length; i++) {
             let value = values[i];
+            if (value === ""){
+                value = "0 values";
+            }
             var lg = mapLayerGroups[value];
 
             if (lg === undefined) {
