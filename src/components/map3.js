@@ -168,15 +168,6 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
         featureLayer.bindTooltip("<div class='popup'>"+displyOnlyOneValueAftreComma(feature.properties.average_surface)+"m2</div>");
     }}).addTo(map);
 
-    // geoJsonLayerMedian = L.geoJSON(parishData, {style: style, onEachFeature: (feature, featureLayer) => {
-    //     featureLayer.on({
-    //         mouseover: highlightFeature,
-    //         mouseout: resetHighlight
-    //     })
-    //     featureLayer.bindPopup("<div>"+feature.properties.NAME+"</div>", {'maxWidth':'500','maxHeight':'350','minWidth':'50'});
-    //     featureLayer.bindTooltip("<div class='popup'>"+displyOnlyOneValueAftreComma(feature.properties.median_surface)+"m2</div>");
-    // }}).addTo(map);
-
 
     let legend = L.control({position: 'bottomright'});
 
