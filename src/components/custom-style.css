@@ -1,0 +1,8 @@
+@import url("observablehq:default.css");
+@import url("observablehq:theme-air.css");
+
+a {
+    cursor:pointer;
+    color: var(--theme-foreground-focus);
+    text-decoration:underline;
+}

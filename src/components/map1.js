@@ -1,6 +1,6 @@
 // Explicit import of leaflet to avoid issues with the Leaflet.heat plugin
 import L from "npm:leaflet";
-import {geometryRegistryMap, registryListToHTML, pythonListStringToList, genereateBaseSommarioniBgLayers} from "./common.js";
+import {geometryRegistryMap, registryListToHTML, genereateBaseSommarioniBgLayers} from "./common.js";
 
 if (L === undefined) console.error("L is undefined");
 
@@ -32,12 +32,9 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
             let values = [];
             registryEntries.forEach(entry => {
                 if (entry[registryField]) {
-                    let converted_vals = pythonListStringToList(entry[registryField]);
-                    for (let i = 0; i < converted_vals.length; i++) {
-                        let value = converted_vals[i];
-                        if (value.length > 0) {
-                            values.push(value);
-                        }
+                    let vals = entry[registryField];
+                    for (let i = 0; i < vals.length; i++) {
+                        values.push(vals[i]);
                     }
                 }
             });
@@ -48,7 +45,7 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
         }
         return feature;
     }).filter(feature => feature.properties[registryField])
-    
+
     let mapLayerGroups = {};
     function onEachFeature(feature, featureLayer) {
 

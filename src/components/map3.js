@@ -6,7 +6,7 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "../plugins/leaflet-heat.js";
-import { geometryRegistryMap, registryListToHTML, genereateBaseSommarioniBgLayers, pythonListStringToList } from "./common.js";
+import { geometryRegistryMap, genereateBaseSommarioniBgLayers } from "./common.js";
 
 let gradePointsColors = [
     // [2000, '#800026'],
@@ -75,6 +75,18 @@ function displyOnlyOneValueAftreComma(value) {
     return value;
 }
 
+
+export function highlightFeature(layer) {
+    layer.setStyle({
+        weight: 5,
+        color: '#FFF',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    layer.bringToFront();
+}
+
 // Create Map and Layer - Runs Once
 export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, registryData, parishData) {
     const map = L.map(mapContainer, {minZoom: 0, maxZoom:18}).setView([45.4382745, 12.3433387 ], 14);
@@ -99,9 +111,9 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
         if (registryEntries) {
             registryEntries.forEach(entry => {
                 if (entry["qualities"]) {
-                    let converted_vals = pythonListStringToList(entry["qualities"]);
-                    for (let i = 0; i < converted_vals.length; i++) {
-                        let value = converted_vals[i];
+                    let vals = entry["qualities"];
+                    for (let i = 0; i < vals.length; i++) {
+                        let value = vals[i];
                         if (value == 'CASA') {
                            isCasa = true; 
                         }
@@ -128,18 +140,6 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
 
     parishData.features = parishData.features.filter(feature =>  feature.properties.average_surface > 0);
 
-    function highlightFeature(e) {
-        var layer = e.target;
-        layer.setStyle({
-            weight: 5,
-            color: '#FFF',
-            dashArray: '',
-            fillOpacity: 0.7
-        });
-
-        layer.bringToFront();
-    }
-
     // define the geoJsonLayer variable outside the function
     // so that it can be accessed in the resetHighlight function
     // and the resetHighlight function can be called from the onEachFeature function
@@ -155,12 +155,14 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
     function resetHighlight(e) {
         geoJsonLayerAverage.resetStyle(e.target);
     }
+    let parishNameLayerMap = new Map();
 
     geoJsonLayerAverage = L.geoJSON(parishData, {style: style, onEachFeature: (feature, featureLayer) => {
         featureLayer.on({
-            mouseover: highlightFeature,
+            mouseover: (e) => highlightFeature(e.target),
             mouseout: resetHighlight
         })
+        parishNameLayerMap.set(feature.properties.NAME, featureLayer);
         // Add a popup to the feature layerr
         featureLayer.bindPopup("<div>"+feature.properties.NAME+"</div>", {'maxWidth':'500','maxHeight':'350','minWidth':'50'});
         featureLayer.bindTooltip("<div class='popup'>"+displyOnlyOneValueAftreComma(feature.properties.average_surface)+"m2</div>");
@@ -235,5 +237,5 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
     `);
 
     // Return the the map instance, the layer group, and the mapping
-    return { map, layerControl, geoJsonLayerAverage, tableData }
+    return { map, layerControl, geoJsonLayerAverage, tableData, parishNameLayerMap }
 }

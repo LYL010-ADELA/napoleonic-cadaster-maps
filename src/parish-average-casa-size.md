@@ -1,7 +1,9 @@
 ---
 title: Napoleonic Cadaster - Porzione Heatmap
 toc: false
+style: components/custom-style.css
 ---
+
 
 ```js
 // Explicit import of leaflet to avoid issues with the Leaflet.heat plugin
@@ -15,10 +17,10 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "./plugins/leaflet-heat.js";
-import {createParishCasaAverageSurfaceHeatMap} from "./components/map3.js";
+import {createParishCasaAverageSurfaceHeatMap, highlightFeature } from "./components/map3.js";
 ```
 
-# Napoleonic Cadaster - Amount of portioned parcels.
+# Napoleonic Cadaster - Average size of "CASA" parcel per parish.
 The heatmap display the average area of parcels that have the "casa" function per parish delimitation.
 
 ```js
@@ -33,12 +35,22 @@ const registre = FileAttachment("./data/venice_1808_landregister_textual_entries
 ```js
 // Call the creation function and store the results
 const porzioneMapComponents = createParishCasaAverageSurfaceHeatMap("map-container-casa-average-size-hm", parcelData, registre, parishData);
+
+// for debugging purpose, keep in mind to remove it after dev
+window.highlightFeature = (name) => {
+    porzioneMapComponents.geoJsonLayerAverage.resetStyle();
+    porzioneMapComponents.map.flyTo(porzioneMapComponents.parishNameLayerMap.get(name).getBounds().getCenter(), 15.4);
+    highlightFeature(porzioneMapComponents.parishNameLayerMap.get(name));
+};
+
+window.messageChat = porzioneMapComponents.geoJsonLayerAverage;
+// can be useful: .openPopup() 
 ```
 
 ### Ranking
 
 <!-- Create the tanble container -->
-<div id="map-container-porzione-hm" style="height: 1200px; margin: 1em 0 2em 0;"></div>
+<div id="table-container-casa-surface-ranking" style="height: 1200px; margin: 1em 0 2em 0;"></div>
 
 ```js
 const table = Inputs.table(porzioneMapComponents.tableData, {
@@ -48,10 +60,11 @@ const table = Inputs.table(porzioneMapComponents.tableData, {
         median_surface: "Median parcel area (m2)"
     },
     format: {
-       average_surface: (x) => x.toFixed(1),
-       median_surface: (x) => x.toFixed(1),
+        name: id => htl.html`<a class="table-row-highlighting" onclick=window.highlightFeature("${id}");>${id}</a>`,
+       average_surface: x => x.toFixed(1),
+       median_surface: x => x.toFixed(1),
     }, 
     select: false
 });
-document.getElementById("map-container-porzione-hm").append(table)
+document.getElementById("table-container-casa-surface-ranking").append(table)
 ```
