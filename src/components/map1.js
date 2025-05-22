@@ -32,15 +32,19 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
             let values = [];
             registryEntries.forEach(entry => {
                 if (entry[registryField]) {
-                    let vals = entry[registryField];
-                    for (let i = 0; i < vals.length; i++) {
-                        values.push(vals[i]);
+                    if (typeof entry[registryField] === "string") {
+                        values.push(entry[registryField]);
+                    } else if (Array.isArray(entry[registryField])) {
+                        let vals = entry[registryField];
+                        for (let i = 0; i < vals.length; i++) {
+                            values.push(vals[i]);
+                        }
                     }
                 }
             });
             // Remove duplicates
             values = [...new Set(values)];
-            // Add the ownership_types to the feature properties
+            // Add the registryFields to the feature properties
             feature.properties[registryField] = values;
         }
         return feature;
