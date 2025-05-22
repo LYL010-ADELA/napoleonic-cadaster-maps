@@ -86,7 +86,6 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
     for (const [key, value] of Object.entries(mapLayerGroups).sort((a, b) => a[0].localeCompare(b[0]))) {
         layerControl.addOverlay(value, key);
     }
-    // layerControl.addOverlay(geoJsonLayer, "Cadastral");
 
     // Return the the map instance, the layer group, and the mapping
     return { map, layerControl, geoJsonLayer, featureLayersMap, mapLayerGroups };
