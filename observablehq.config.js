@@ -17,6 +17,7 @@ export default {
         {name: "Ownership types and parcels functions", path: "/cadastre-property-type"},
         {name: "Average surface of Casa per parish", path: "/parish-average-casa-size"},
         {name: "Expropriations of private properties", path: "/expropriation-map"},
+        {name: "Functions Histograms", path: "/function-histograms"},
       ]
     }
   ],

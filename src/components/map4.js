@@ -6,8 +6,36 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "../plugins/leaflet-heat.js";
-import { geometryRegistryMap, genereateBaseSommarioniBgLayers, registryListToHTML } from "./common.js";
+import { geometryRegistryMap, genereateBaseSommarioniBgLayers } from "./common.js";
 
+function countFunctionOccurences(acc, curr) {
+    // the accumulator is a map of the function's name, and the key the number of time it occurs
+    for(let i = 0; i < curr.qualities.length; ++i){
+        let curr_quality = curr.qualities[i];
+        if (acc[curr_quality]) {
+            acc[curr_quality] += 1;
+        } else {
+            acc[curr_quality] = 1;
+        }
+    } 
+    return acc;
+}
+
+export function cookData(registryData, N) {
+    console.log("Cooking data for the most represented institutions", registryData);
+    let groupedInstitutions = Object.groupBy(registryData, v => v.owner_standardised)
+    let NMostRepresentedInstitutions = Object.entries(groupedInstitutions)
+        .map(([key, value]) => {
+            return {
+                name: key,
+                count: value.length,
+                qualities: value.reduce(countFunctionOccurences, {})
+            };
+        })
+        .sort((a, b) => b.count - a.count)
+        .slice(0, N);
+    return NMostRepresentedInstitutions;
+}
 
 // Create Map and Layer - Runs Once
 export function createExpropriationMap(mapContainer, parcelData, registryData) {
@@ -78,6 +106,7 @@ export function createExpropriationMap(mapContainer, parcelData, registryData) {
                 previous_owner_name: expropriation.old_entity_standardised.trim(),
                 owner_name: expropriation.owner_standardised.trim(),
                 surface: feature.properties.area,
+                group: expropriation.old_entity_standardised_class.trim()
             };
         });
     }).flat();
@@ -92,6 +121,15 @@ export function createExpropriationMap(mapContainer, parcelData, registryData) {
     });
     tableDataStolen = tableDataStolen.sort((a, b) => b.surface - a.surface);
 
+    let tableGroupStolen = Object.groupBy(expropriationStats, v => v.group);
+    tableGroupStolen = Object.entries(tableGroupStolen).map(([key, value]) => {
+        let totalSurface = value.reduce((acc, curr) => acc + curr.surface, 0);
+        return {
+            name: key,
+            surface: totalSurface
+        };
+    });
+    tableGroupStolen = tableGroupStolen.sort((a, b) => b.surface - a.surface);
 
 
     let tableDataReceived = Object.groupBy(expropriationStats, v => v.owner_name);
@@ -151,5 +189,5 @@ export function createExpropriationMap(mapContainer, parcelData, registryData) {
     `);
 
     // Return the the map instance, the layer group, and the mapping
-    return { map, layerControl, geoJsonLayer, tableDataStolen, tableDataReceived }
+    return { map, layerControl, geoJsonLayer, tableDataStolen, tableDataReceived, tableGroupStolen }
 }
