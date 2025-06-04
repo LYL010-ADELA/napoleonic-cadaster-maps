@@ -1,6 +1,7 @@
 ---
 title: Napoleonic Cadaster - property type
 toc: false
+style: components/custom-style.css
 ---
 
 ```js
@@ -15,7 +16,7 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "./plugins/leaflet-heat.js";
-import {createMapAndLayers} from "./components/map1.js";
+import {createMapAndLayers} from "./components/map-standard-types.js";
 ```
 
 # Napoleonic Cadaster - Map of ownership types and parcels functions.

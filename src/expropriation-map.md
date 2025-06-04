@@ -1,6 +1,7 @@
 ---
-title: Napoleonic Cadaster - Porzione Heatmap
+title: Napoleonic Cadaster - Expropriation Map
 toc: false
+style: components/custom-style.css
 ---
 
 ```js
@@ -15,7 +16,7 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "./plugins/leaflet-heat.js";
-import {createExpropriationMap} from "./components/map4.js";
+import {createExpropriationMap} from "./components/map-expropriation.js";
 ```
 
 # Napoleonic Cadaster - Expropriations from private institutions.

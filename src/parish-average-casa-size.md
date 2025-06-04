@@ -1,5 +1,5 @@
 ---
-title: Napoleonic Cadaster - Porzione Heatmap
+title: Napoleonic Cadaster - Average casa size
 toc: false
 style: components/custom-style.css
 ---
@@ -17,7 +17,7 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "./plugins/leaflet-heat.js";
-import {createParishCasaAverageSurfaceHeatMap } from "./components/map3.js";
+import {createParishCasaAverageSurfaceHeatMap } from "./components/map-parish.js";
 ```
 
 # Napoleonic Cadaster - Average size of "CASA" parcel per parish.
@@ -68,7 +68,7 @@ const table = Inputs.table(porzioneMapComponents.tableData, {
         median_surface: "Median parcel area (m2)"
     },
     format: {
-        name: id => htl.html`<a class="table-row-highlighting" onclick=window.highlightFeature("${id}");>${id}</a>`,
+        name: id => htl.html`<a class="hover-line table-row-padding" onclick=window.highlightFeature("${id}");>${id}</a>`,
        average_surface: x => x.toFixed(1),
        median_surface: x => x.toFixed(1),
     }, 

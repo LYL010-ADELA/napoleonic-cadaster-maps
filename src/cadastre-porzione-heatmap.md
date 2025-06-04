@@ -1,6 +1,7 @@
 ---
 title: Napoleonic Cadaster - Porzione Heatmap
 toc: false
+style: components/custom-style.css
 ---
 
 ```js
@@ -15,7 +16,7 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "./plugins/leaflet-heat.js";
-import {createPorzioneHeatMap} from "./components/map2.js";
+import {createPorzioneHeatMap} from "./components/map-porzione.js";
 ```
 
 # Napoleonic Cadaster - Amount of portioned parcels.
