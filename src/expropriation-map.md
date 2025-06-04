@@ -28,7 +28,7 @@ const registre = FileAttachment("./data/venice_1808_landregister_textual_entries
 ```
 
 <!-- Create the map container -->
-<div id="map-container-expropriations" style="height: 750px; margin: 1em 0 2em 0;"></div>
+<div id="map-container-expropriations" class="map-component" style="height: 750px;"></div>
 
 ```js
 // Call the creation function and store the results
@@ -38,8 +38,10 @@ const expropriationMap = createExpropriationMap("map-container-expropriations", 
 ### Most expropriated institution
 
 <!-- Create the tanble container -->
-<div id="table-container-expropriation-ranking" style="width: 700px; margin: 1em 0 2em 0;"></div>
 
+<div class="block-container">
+<div id="table-container-expropriation-ranking"></div>
+</div>
 
 ```js
 const table = Inputs.table(expropriationMap.tableDataStolen, {
@@ -57,8 +59,9 @@ document.getElementById("table-container-expropriation-ranking").append(table)
 
 
 <!-- Create the tanble container -->
+<div class="block-container">
 <div id="barchart-container-expropriation-ranking" style="width: 1000px; margin: 1em 0 2em 0;"></div>
-
+</div>
 
 ```js
 const chart = Plot.barY(expropriationMap.tableGroupStolen, {x: "name", y: "surface"}).plot({marginLeft: 130});
@@ -71,8 +74,9 @@ console.log(expropriationMap.tableDataStolen);
 ### Ranking of the institution receiving the most surface
 
 <!-- Create the tanble container -->
+<div class="block-container">
 <div id="table-container-receive-ranking" style="width: 700px; margin: 1em 0 2em 0;"></div>
-
+</div>
 
 ```js
 const table = Inputs.table(expropriationMap.tableDataReceived, {
@@ -90,8 +94,9 @@ document.getElementById("table-container-receive-ranking").append(table);
 
 
 <!-- Create the tanble container -->
-<div id="barchart-container-received-propriety" style="width: 1000px; margin: 1em 0 2em 0;"></div>
-
+<div class="block-container">
+<div id="barchart-container-received-propriety"></div>
+</div>
 
 ```js
 const chartReceived = Plot.barX(expropriationMap.tableDataReceived, {y: "name", x: "surface"}).plot({marginLeft: 130});

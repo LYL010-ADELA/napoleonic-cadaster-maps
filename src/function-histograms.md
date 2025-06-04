@@ -8,7 +8,9 @@ style: components/custom-style.css
 # Napoleonic Cadaster - Functions Histograms.
 
 <!-- Create the tanble container -->
-<div id="barchart-container" style="width: 1000px; margin: 1em 0 2em 0;"></div>
+<div class="block-container">
+<div id="barchart-container" class="block-component"></div>
+</div>
 
 ```js
 import {cookData} from "./components/map-expropriation.js";

@@ -29,7 +29,7 @@ const geojson = FileAttachment("./data/venice_1808_landregister_geometries.geojs
 const registre = FileAttachment("./data/venice_1808_landregister_textual_entries.json").json();
 ```
 
-<div id="map-container-ownership-type" style="height: 750px; margin: 1em 0 2em 0;"></div>
+<div id="map-container-ownership-type" class="map-component"></div>
 
 ```js
 const ownMapComponents = createMapAndLayers("map-container-ownership-type", geojson, registre, 'ownership_types', true);
@@ -37,7 +37,7 @@ const ownMapComponents = createMapAndLayers("map-container-ownership-type", geoj
 
 
 ## Functions of parcel
-<div id="map-container-func-type" style="height: 750px; margin: 1em 0 2em 0;"></div>
+<div id="map-container-func-type" class="map-component"></div>
 
 ```js
 const funMapComponents = createMapAndLayers("map-container-func-type", geojson, registre, 'qualities', false);
@@ -45,7 +45,7 @@ const funMapComponents = createMapAndLayers("map-container-func-type", geojson, 
 
 
 ## Class of standardized owner
-<div id="map-container-own-class" style="height: 750px; margin: 1em 0 2em 0;"></div>
+<div id="map-container-own-class" class="map-component"></div>
 
 ```js
 const funMapComponents = createMapAndLayers("map-container-own-class", geojson, registre, 'owner_standardised_class', true);
@@ -53,7 +53,7 @@ const funMapComponents = createMapAndLayers("map-container-own-class", geojson, 
 
 
 ## Type of owner
-<div id="map-container-own-type" style="height: 750px; margin: 1em 0 2em 0;"></div>
+<div id="map-container-own-type" class="map-component"></div>
 
 ```js
 const funMapComponents = createMapAndLayers("map-container-own-type", geojson, registre, 'owner_type', true);
@@ -61,7 +61,7 @@ const funMapComponents = createMapAndLayers("map-container-own-type", geojson, r
 
 
 ## Owner right of use
-<div id="map-container-own-ros" style="height: 750px; margin: 1em 0 2em 0;"></div>
+<div id="map-container-own-ros" class="map-component"></div>
 
 ```js
 const funMapComponents = createMapAndLayers("map-container-own-ros", geojson, registre, 'owner_right_of_use', false);

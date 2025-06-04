@@ -30,7 +30,7 @@ const registre = FileAttachment("./data/venice_1808_landregister_textual_entries
 ```
 
 <!-- Create the map container -->
-<div id="map-container-casa-average-size-hm" style="height: 750px; margin: 1em 0 2em 0;"></div>
+<div id="map-container-casa-average-size-hm" class="map-component"></div>
 
 ```js
 // Call the creation function and store the results
@@ -50,15 +50,12 @@ window.highlightFeature = (name) => {
     porzioneMapComponents.parishNameLayerMap.get(name).bringToFront();
     porzioneMapComponents.parishNameLayerMap.get(name).openPopup() 
     // document.getElementById('map-container-casa-average-size-hm').scrollIntoView({"behavior":"smooth"});
-
 };
-
 ```
-
-### Ranking
-
 <!-- Create the tanble container -->
-<div id="table-container-casa-surface-ranking" style="height: 1200px; margin: 1em 0 2em 0;"></div>
+<div class="block-container">
+<div id="table-container-casa-surface-ranking"></div>
+</div>
 
 ```js
 const table = Inputs.table(porzioneMapComponents.tableData, {

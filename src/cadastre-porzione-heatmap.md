@@ -28,7 +28,7 @@ const registre = FileAttachment("./data/venice_1808_landregister_textual_entries
 ```
 
 <!-- Create the map container -->
-<div id="map-container-porzione-hm" style="height: 750px; margin: 1em 0 2em 0;"></div>
+<div id="map-container-porzione-hm" class="map-component"></div>
 
 ```js
 // Call the creation function and store the results
