@@ -66,3 +66,19 @@ const funMapComponents = createMapAndLayers("map-container-own-type", geojson, r
 ```js
 const funMapComponents = createMapAndLayers("map-container-own-ros", geojson, registre, 'owner_right_of_use', false);
 ```
+
+
+## old entity religious type
+<div id="map-container-old-ent-reg-type" class="map-component"></div>
+
+```js
+const funMapComponents = createMapAndLayers("map-container-old-ent-reg-type", geojson, registre, 'old_religious_entity_type', true);
+```
+
+# old owner type
+
+<div id="map-container-old-own-type" class="map-component"></div>
+
+```js
+const funMapComponents = createMapAndLayers("map-container-old-own-type", geojson, registre, 'old_owner_type', true);
+```
