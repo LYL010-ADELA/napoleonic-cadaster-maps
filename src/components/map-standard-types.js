@@ -7,6 +7,14 @@ if (L === undefined) console.error("L is undefined");
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "../plugins/leaflet-heat.js";
 
+function cleanStdVal(str) {
+    let val = str.toLowerCase();
+    if (val && val.length > 0) {
+        val = val.charAt(0).toUpperCase() + val.slice(1);
+    }
+    val = val.replace(/_/g, ' ');
+    return val;
+}
 
 // Create Map and Layer - Runs Once
 export function createMapAndLayers(mapContainer, geojsonData, registryData, registryField, enabledLayer) {
@@ -33,11 +41,11 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
             registryEntries.forEach(entry => {
                 if (entry[registryField]) {
                     if (typeof entry[registryField] === "string") {
-                        values.push(entry[registryField]);
+                        values.push(cleanStdVal(entry[registryField]));
                     } else if (Array.isArray(entry[registryField])) {
                         let vals = entry[registryField];
                         for (let i = 0; i < vals.length; i++) {
-                            values.push(vals[i]);
+                            values.push(cleanStdVal(vals[i]));
                         }
                     }
                 }

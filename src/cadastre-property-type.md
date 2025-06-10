@@ -32,7 +32,7 @@ const registre = FileAttachment("./data/venice_1808_landregister_textual_entries
 <div id="map-container-ownership-type" class="map-component"></div>
 
 ```js
-const ownMapComponents = createMapAndLayers("map-container-ownership-type", geojson, registre, 'ownership_types', true);
+const ownMapComponents = createMapAndLayers("map-container-ownership-type", geojson, registre, 'ownership_types_en', true);
 ```
 
 
@@ -40,7 +40,7 @@ const ownMapComponents = createMapAndLayers("map-container-ownership-type", geoj
 <div id="map-container-func-type" class="map-component"></div>
 
 ```js
-const funMapComponents = createMapAndLayers("map-container-func-type", geojson, registre, 'qualities', false);
+const funMapComponents = createMapAndLayers("map-container-func-type", geojson, registre, 'qualities_en', false);
 ```
 
 
@@ -56,7 +56,7 @@ const funMapComponents = createMapAndLayers("map-container-own-class", geojson, 
 <div id="map-container-own-type" class="map-component"></div>
 
 ```js
-const funMapComponents = createMapAndLayers("map-container-own-type", geojson, registre, 'owner_type', true);
+const funMapComponents = createMapAndLayers("map-container-own-type", geojson, registre, 'owner_type_en', true);
 ```
 
 
@@ -64,7 +64,7 @@ const funMapComponents = createMapAndLayers("map-container-own-type", geojson, r
 <div id="map-container-own-ros" class="map-component"></div>
 
 ```js
-const funMapComponents = createMapAndLayers("map-container-own-ros", geojson, registre, 'owner_right_of_use', false);
+const funMapComponents = createMapAndLayers("map-container-own-ros", geojson, registre, 'owner_right_of_use_en', false);
 ```
 
 
@@ -72,7 +72,7 @@ const funMapComponents = createMapAndLayers("map-container-own-ros", geojson, re
 <div id="map-container-old-ent-reg-type" class="map-component"></div>
 
 ```js
-const funMapComponents = createMapAndLayers("map-container-old-ent-reg-type", geojson, registre, 'old_religious_entity_type', true);
+const funMapComponents = createMapAndLayers("map-container-old-ent-reg-type", geojson, registre, 'old_religious_entity_type_en', true);
 ```
 
 # old owner type
@@ -80,5 +80,5 @@ const funMapComponents = createMapAndLayers("map-container-old-ent-reg-type", ge
 <div id="map-container-old-own-type" class="map-component"></div>
 
 ```js
-const funMapComponents = createMapAndLayers("map-container-old-own-type", geojson, registre, 'old_owner_type', true);
+const funMapComponents = createMapAndLayers("map-container-old-own-type", geojson, registre, 'old_owner_type_en', true);
 ```
