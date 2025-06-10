@@ -12,6 +12,26 @@ export function randomCssColor(seed) {
     return `rgb(${r}, ${g}, ${b})`;
 }
 
+export function displayOnlyOneValueAfterComma(value) {
+    if (value) {
+        let str = value.toString();
+        let index = str.indexOf(".");
+        if (index !== -1) {
+            return str.substring(0, index + 2);
+        }
+    }
+    return value;
+}
+
+export function getColorFromGradePointsArray(d, gradePointsColors, defaultColor) {
+    for (let i = 0; i < gradePointsColors.length; i++) {
+        if (d > gradePointsColors[i][0]) {
+            return gradePointsColors[i][1];
+        }
+    }
+    return defaultColor;
+}
+
 // merge the two list of objects using the "geometry_id" field:
 export function geometryRegistryMap(registryData) {
     const geometryRegistryMap = new Map();

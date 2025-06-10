@@ -6,31 +6,22 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "../plugins/leaflet-heat.js";
-import { geometryRegistryMap, genereateBaseSommarioniBgLayers } from "./common.js";
+import { geometryRegistryMap, genereateBaseSommarioniBgLayers, displayOnlyOneValueAfterComma, getColorFromGradePointsArray } from "./common.js";
 
 let gradePointsColors = [
-    // [2000, '#800026'],
-    [1000, '#BD0026'],
-    [500 , '#E31A1C'],
-    [400, '#FC4E2A'],
+    // [2000, ''],
+    [1000,'#FFEDA0'],
+    [500, '#FED976'],
+    [400, '#FEB24C'],
     [300, '#FD8D3C'],
-    [200, '#FEB24C'],
-    [100, '#FED976'],
-    [0,'#FFEDA0']
+    [200, '#FC4E2A'],
+    [100 , '#E31A1C'],
+    [0, '#BD0026']
 ];
-
-function getColor(d) {
-    for (let i = 0; i < gradePointsColors.length; i++) {
-        if (d > gradePointsColors[i][0]) {
-            return gradePointsColors[i][1];
-        }
-    }
-    return '#FFEDA0';
-}
 
 function style(feature) {
     return {
-        fillColor: getColor(feature.properties.average_surface),
+        fillColor: getColorFromGradePointsArray(feature.properties.average_surface, gradePointsColors, '#800026'),
         weight: 0,
         opacity: 1,
         color: 'white',
@@ -62,19 +53,6 @@ function median(l) {
         return l[mid];
     }
 }
-
-
-function displyOnlyOneValueAftreComma(value) {
-    if (value) {
-        let str = value.toString();
-        let index = str.indexOf(".");
-        if (index !== -1) {
-            return str.substring(0, index + 2);
-        }
-    }
-    return value;
-}
-
 
 
 // Create Map and Layer - Runs Once
@@ -169,7 +147,7 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
         parishNameLayerMap.set(feature.properties.NAME, featureLayer);
         // Add a popup to the feature layerr
         featureLayer.bindPopup("<div>"+feature.properties.NAME+"</div>", {'maxWidth':'500','maxHeight':'350','minWidth':'50'});
-        featureLayer.bindTooltip("<div class='popup'>"+displyOnlyOneValueAftreComma(feature.properties.average_surface)+"m2</div>");
+        featureLayer.bindTooltip("<div class='popup'>"+displayOnlyOneValueAfterComma(feature.properties.average_surface)+"m2</div>");
     }}).addTo(map);
 
 
@@ -182,7 +160,7 @@ export function createParishCasaAverageSurfaceHeatMap(mapContainer, parcelData, 
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            '<i style="background:' + getColorFromGradePointsArray(grades[i] + 1, gradePointsColors, '#FFEDA0') + '"></i> ' +
             grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
         }
 

@@ -16,7 +16,7 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "./plugins/leaflet-heat.js";
-import {createExpropriationMap} from "./components/map-expropriation.js";
+import {createExpropriationParcelMap, createExpropriationParishMap} from "./components/map-expropriation.js";
 ```
 
 # Napoleonic Cadaster - Expropriations from private institutions.
@@ -25,6 +25,7 @@ Display all parcels whose ownerhsip has been transfered to the public state of V
 ```js
 const parcelData = FileAttachment("./data/venice_1808_landregister_geometries.geojson").json();
 const registre = FileAttachment("./data/venice_1808_landregister_textual_entries.json").json();
+const parishData = FileAttachment("./data/1740_redrawn_parishes_cleaned_wikidata_standardised.geojson").json();
 ```
 
 <!-- Create the map container -->
@@ -32,7 +33,7 @@ const registre = FileAttachment("./data/venice_1808_landregister_textual_entries
 
 ```js
 // Call the creation function and store the results
-const expropriationMap = createExpropriationMap("map-container-expropriations", parcelData, registre);
+const expropriationMap = createExpropriationParcelMap("map-container-expropriations", parcelData, registre);
 ```
 
 ### Most expropriated institution
@@ -66,9 +67,7 @@ document.getElementById("table-container-expropriation-ranking").append(table)
 ```js
 const chart = Plot.barY(expropriationMap.tableGroupStolen, {x: "name", y: "surface"}).plot({marginLeft: 130});
 document.getElementById("barchart-container-expropriation-ranking").append(chart);
-console.log(expropriationMap.tableDataStolen);
 ```
-
 
 
 ### Ranking of the institution receiving the most surface
@@ -101,4 +100,48 @@ document.getElementById("table-container-receive-ranking").append(table);
 ```js
 const chartReceived = Plot.barX(expropriationMap.tableDataReceived, {y: "name", x: "surface"}).plot({marginLeft: 130});
 document.getElementById("barchart-container-received-propriety").append(chartReceived);
+```
+
+# Percentage of expropriated surface per parish delimitations:
+
+
+<div id="map-container-parish-expropriation-size-hm" class="map-component"></div>
+
+```js
+// Call the creation function and store the results
+const parishMapComponents = createExpropriationParishMap("map-container-parish-expropriation-size-hm", parcelData, registre, parishData);
+
+// affecting values to the window is the easiest way to break the observable sandbox and make code available in the plain JS context of the webpage.
+window.highlightFeature = (name) => {
+    parishMapComponents.geoJsonLayerParish.resetStyle();
+    // for some reason, observable does not let me set intermediat variable, so all action on layer has to call the layer from the hashMap again.
+    parishMapComponents.map.flyTo(parishMapComponents.parishNameLayerMap.get(name).getBounds().getCenter(), 15.4);
+    parishMapComponents.parishNameLayerMap.get(name).setStyle({
+        weight: 5,
+        color: '#FFF',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+    parishMapComponents.parishNameLayerMap.get(name).bringToFront();
+    parishMapComponents.parishNameLayerMap.get(name).openPopup() 
+};
+```
+<!-- Create the tanble container -->
+<div class="block-container">
+<div id="table-container-parish-expropriation-surface-ranking"></div>
+</div>
+
+```js
+const table = Inputs.table(parishMapComponents.tableData, {
+    header: {
+        name: "Parish Name",
+        expropriation_percentage: "Percentage of expropriated surface",
+    },
+    format: {
+        name: id => htl.html`<a class="hover-line table-row-padding" onclick=window.highlightFeature("${id}");>${id}</a>`,
+       expropriation_percentage: x => String((x*100.0).toFixed(2))+'%'
+    }, 
+    select: false
+});
+document.getElementById("table-container-parish-expropriation-surface-ranking").append(table)
 ```
