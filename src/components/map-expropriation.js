@@ -6,6 +6,7 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "../plugins/leaflet-heat.js";
+import { html } from "htl";
 import { geometryRegistryMap, genereateBaseSommarioniBgLayers, displayOnlyOneValueAfterComma, getColorFromGradePointsArray } from "./common.js";
 
 function countFunctionOccurences(acc, curr) {
@@ -212,6 +213,25 @@ export function createExpropriationParishMap(mapContainer, parcelData, registryD
     
 }
 
+export function formatNameGeometryIdStringIntoHref(val) {
+    let [name, geometryId] = val.split('|');
+    let geometryIds = geometryId.split(',').map(v => Number(v.trim()));
+    return html`<a class="hover-line table-row-padding" onclick=window.highlightExpropriationFeatures([${geometryIds}]);>${name}</a>`;
+}
+
+export function returnBoundExtentOfGeometryList(geometryList) {
+    if (geometryList.length === 0) {
+        return [[0, 0], [0, 0]];
+    }
+    let bounds = geometryList.map(geometry => {
+        return geometry.getBounds();
+    });
+    let maxLat = Math.max(...bounds.map(b => b.getNorthEast().lat));
+    let minLng = Math.min(...bounds.map(b => b.getSouthWest().lng));
+    let maxLng = Math.max(...bounds.map(b => b.getNorthEast().lng));
+    return {lat: (minLat+maxLat)/2, lon: (minLng+maxLng)/2}
+}
+
 // Create Map and Layer - Runs Once
 export function createExpropriationParcelMap(mapContainer, parcelData, registryData) {
     const map = L.map(mapContainer, {minZoom: 0, maxZoom:18}).setView([45.4382745, 12.3433387 ], 14);
@@ -234,6 +254,8 @@ export function createExpropriationParcelMap(mapContainer, parcelData, registryD
     }).filter(feature => feature.properties.expropriations.length > 0);
 
     let mapLayerGroups = {};
+
+    let geometryIdFeatureMap = new Map();
     function onEachFeature(feature, featureLayer) {
         let values = feature.properties["expropriations"];
         for (let i = 0; i < values.length; i++) {
@@ -248,9 +270,11 @@ export function createExpropriationParcelMap(mapContainer, parcelData, registryD
             lg.addLayer(featureLayer);
         }    
 
+        geometryIdFeatureMap.set(String(feature.properties.geometry_id), featureLayer);
+
         let allRegistryEntries = registryMap.get(feature.properties.geometry_id);
 
-        let html = "<div>";
+        let html = "<div class=>";
         html += allRegistryEntries.map(entry =>  
             {return `<strong>Previous owner:</strong> ${entry.old_entity_standardised}<br><strong>Owner in 1808:</strong> ${entry.owner_standardised}<br>`;}
         ).reduce((acc, curr) => acc + curr, "");
@@ -263,6 +287,7 @@ export function createExpropriationParcelMap(mapContainer, parcelData, registryD
     let expropriationStats = structuredClone(parcelData).features.map(feature => {
         return feature.properties.expropriations.map(expropriation => {
             return {
+                geometry_id : feature.properties.geometry_id,
                 previous_owner_name: expropriation.old_entity_standardised.trim(),
                 owner_name: expropriation.owner_standardised.trim(),
                 surface: feature.properties.area,
@@ -274,8 +299,9 @@ export function createExpropriationParcelMap(mapContainer, parcelData, registryD
     let tableDataStolen = Object.groupBy(expropriationStats, v => v.previous_owner_name);
     tableDataStolen = Object.entries(tableDataStolen).map(([key, value]) => {
         let totalSurface = value.reduce((acc, curr) => acc + curr.surface, 0);
+        let allGeometryIds = value.map(v => v.geometry_id);
         return {
-            name: key,
+            name: key + '|' + String(allGeometryIds),
             surface: totalSurface
         };
     });
@@ -308,5 +334,5 @@ export function createExpropriationParcelMap(mapContainer, parcelData, registryD
     }
 
     // Return the the map instance, the layer group, and the mapping
-    return { map, layerControl, geoJsonLayer, tableDataStolen, tableDataReceived, tableGroupStolen }
+    return { map, layerControl, geoJsonLayer, tableDataStolen, tableDataReceived, tableGroupStolen, geometryIdFeatureMap }
 }

@@ -108,7 +108,6 @@ export function registryListToHTML(allRegistryEntries, whichColsToExclude = 'it'
     if (allRegistryEntries && allRegistryEntries.length > 0) {
         for (let i = 0; i < allRegistryEntries.length; i++) {
             if(allRegistryEntries.length > 1){
-                console.log(allRegistryEntries.length);
                 html += `<dt><h3>Registry Entry #${i+1}</h3></dt><dd></dd>`;
             }
             html += formatRegistryEntryToHTML(allRegistryEntries[i], excludeCols);

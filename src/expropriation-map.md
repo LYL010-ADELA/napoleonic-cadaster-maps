@@ -16,7 +16,7 @@ if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "./plugins/leaflet-heat.js";
-import {createExpropriationParcelMap, createExpropriationParishMap} from "./components/map-expropriation.js";
+import {createExpropriationParcelMap, createExpropriationParishMap, formatNameGeometryIdStringIntoHref, returnBoundExtentOfGeometryList} from "./components/map-expropriation.js";
 ```
 
 # Napoleonic Cadaster - Expropriations from private institutions.
@@ -34,11 +34,27 @@ const parishData = FileAttachment("./data/1740_redrawn_parishes_cleaned_wikidata
 ```js
 // Call the creation function and store the results
 const expropriationMap = createExpropriationParcelMap("map-container-expropriations", parcelData, registre);
+
+// affecting values to the window is the easiest way to break the observable sandbox and make code available in the plain JS context of the webpage.
+window.highlightExpropriationFeatures = (geometryIdList) => {
+    expropriationMap.geoJsonLayer.resetStyle();
+    expropriationMap.map.flyTo(returnBoundExtentOfGeometryList(geometryIdList.map(a => expropriationMap.geometryIdFeatureMap.get(String(a)))), 15.4); 
+    for (const id of geometryIdList) {
+        expropriationMap.geometryIdFeatureMap.get(String(id)).setStyle({
+            weight: 5,
+            color: '#FF0000',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+    }
+};
+
+window.geometryIdFeatureMap = expropriationMap.geometryIdFeatureMap;
 ```
 
 ### Most expropriated institution
 
-<!-- Create the tanble container -->
+<!-- Create the table container -->
 
 <div class="block-container">
 <div id="table-container-expropriation-ranking"></div>
@@ -51,7 +67,8 @@ const table = Inputs.table(expropriationMap.tableDataStolen, {
         surface: "Expropriation size (m2)"
     },
     format: {
-       surface: x => x.toFixed(1)
+       surface: x => x.toFixed(1),
+       name: y => formatNameGeometryIdStringIntoHref(y)
     }, 
     select: false
 });
@@ -123,7 +140,7 @@ window.highlightFeature = (name) => {
         fillOpacity: 0.7
     });
     parishMapComponents.parishNameLayerMap.get(name).bringToFront();
-    parishMapComponents.parishNameLayerMap.get(name).openPopup() 
+    parishMapComponents.parishNameLayerMap.get(name).openPopup();
 };
 ```
 <!-- Create the tanble container -->
