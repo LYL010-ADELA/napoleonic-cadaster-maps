@@ -16,12 +16,38 @@ function cleanStdVal(str) {
     return val;
 }
 
+
 // Create Map and Layer - Runs Once
 export function createMapAndLayers(mapContainer, geojsonData, registryData, registryField, enabledLayer) {
     const map = L.map(mapContainer, {minZoom: 0, maxZoom:18}).setView([45.4382745, 12.3433387 ], 14);
 
+    // this allows to get the current selected overlays from the control 
+    L.Control.Layers.include({
+        getOverlays: function() {
+            // create hash to hold all layers
+            var control, layers;
+            layers = {};
+            control = this;
+
+            // loop thru all layers in control
+            control._layers.forEach(function(obj) {
+            var layerName;
+
+            // check if layer is an overlay
+            if (obj.overlay) {
+                // get name of overlay
+                layerName = obj.name;
+                // store whether it's present on the map or not
+                return layers[layerName] = control._map.hasLayer(obj.layer);
+            }
+            });
+
+            return layers;
+        }
+    });
     // Crate a control to switch between layers
     const layerControl = L.control.layers().addTo(map);
+
 
     // Add all default layers to the map.
     const bgLayerList = genereateBaseSommarioniBgLayers();
@@ -59,6 +85,43 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
     }).filter(feature => feature.properties[registryField])
 
     let mapLayerGroups = {};
+
+    // pop up needs to be generated dyinamically based on the current selected standard value, to only display registry entries that match the current selected standard value
+    function onPopupClick(e) {
+        // Get the clicked feature layer
+        const featureLayer = e.target;
+        // Get the geometry_id from the feature properties
+        const geometryId = featureLayer.feature.properties.geometry_id;
+        const allRegistryEntries = registryMap.get(geometryId);
+        const currSelectedStdValues = Object.entries(layerControl.getOverlays()).filter(sel => sel[1]).map(v => v[0]);
+
+        function filterEntrysByStdValue(entry) {
+            if (entry === undefined || entry[registryField] === undefined || entry[registryField] === null) {
+                return currSelectedStdValues.includes("0 values");
+            }
+            if (typeof entry[registryField] === "string") {
+                if (entry[registryField] === "") {
+                    return currSelectedStdValues.includes("0 values");
+                }
+                return currSelectedStdValues.includes(cleanStdVal(entry[registryField]));
+            } else if (Array.isArray(entry[registryField])) {
+                if (entry[registryField].length === 0 || (entry[registryField].length === 1 && entry[registryField][0] === "")) {
+                    return currSelectedStdValues.includes("0 values");
+                }
+                for (let i = 0; i < entry[registryField].length; i++) {
+                    if (currSelectedStdValues.includes(cleanStdVal(entry[registryField][i]))) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        let html = registryListToHTML(allRegistryEntries.filter(filterEntrysByStdValue))
+        // Add a popup to the feature layer
+        e.target.bindPopup(html, {'maxWidth':'350','maxHeight':'500','minWidth':'150'}).openPopup();
+    }
+
     function onEachFeature(feature, featureLayer) {
 
         //does layerGroup already exist? if not create it and add to map
@@ -82,11 +145,7 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
 
             lg.addLayer(featureLayer);
         }    
-
-        let allRegistryEntries = registryMap.get(feature.properties.geometry_id);
-        let html = registryListToHTML(allRegistryEntries);
-        // Add a popup to the feature layer
-        featureLayer.bindPopup(html, {'maxWidth':'500','maxHeight':'350','minWidth':'350'});
+        featureLayer.on('click', onPopupClick);
     }
     // Store map from geom_id -> leaflet layer instance
     const featureLayersMap = new Map();

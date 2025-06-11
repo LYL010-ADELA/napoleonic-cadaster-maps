@@ -20,6 +20,7 @@
   --border-radius-round: 9999px;
   --border-color: var(--gray-5);
   --bg-color: var(--gray-1);
+  --text-secondary: var(--gray-8);
 }
 
 /* doesn't work, have to check with manuel */
@@ -38,6 +39,36 @@ a {
 .line {
   position: relative;
   cursor: pointer;
+}
+
+
+
+dl {
+  color: var(--text-secondary);
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr;
+  width: 100%;
+  dt {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    /* font-size: var(--text-mini); */
+    font-size: 10px;
+    font-weight: var(--bold);
+    border-top: 1px solid var(--border-color);
+    word-break: break-word;
+    min-height: 26px;
+  }
+
+  dd {
+    color: var(--text-color);
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    border-top: 1px solid var(--border-color);
+    padding-left: 8px;
+    padding-bottom: 8px;
+    margin-left: 0;
+    word-break: break-word;
+  }
 }
 
 .block-container {
