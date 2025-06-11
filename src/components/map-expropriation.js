@@ -226,6 +226,7 @@ export function returnBoundExtentOfGeometryList(geometryList) {
     let bounds = geometryList.map(geometry => {
         return geometry.getBounds();
     });
+    let minLat = Math.min(...bounds.map(b => b.getSouthWest().lat));
     let maxLat = Math.max(...bounds.map(b => b.getNorthEast().lat));
     let minLng = Math.min(...bounds.map(b => b.getSouthWest().lng));
     let maxLng = Math.max(...bounds.map(b => b.getNorthEast().lng));
