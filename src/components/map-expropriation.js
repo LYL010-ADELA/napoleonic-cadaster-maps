@@ -11,22 +11,24 @@ import { geometryRegistryMap, genereateBaseSommarioniBgLayers, displayOnlyOneVal
 
 function countFunctionOccurences(acc, curr) {
     // the accumulator is a map of the function's name, and the key the number of time it occurs
-    for(let i = 0; i < curr.qualities.length; ++i){
-        let curr_quality = curr.qualities[i];
-        if (acc[curr_quality]) {
-            acc[curr_quality] += 1;
-        } else {
-            acc[curr_quality] = 1;
+    if(curr['qualities_en'] !== undefined && curr['qualities_en'] !== null) {
+        for(let i = 0; i < curr["qualities_en"].length; ++i){
+            let curr_quality = curr["qualities_en"][i];
+            if (acc[curr_quality]) {
+                acc[curr_quality] += 1;
+            } else {
+                acc[curr_quality] = 1;
+            }
         }
-    } 
+    }
     return acc;
 }
 
 function fetchAllQualitiesIntoDict(registryData) {
     let allQualities = [];
     registryData.forEach(entry => {
-        if (entry.qualities) {
-            allQualities = allQualities.concat(entry.qualities);
+        if (entry["qualities_en"]) {
+            allQualities = allQualities.concat(entry["qualities_en"]);
         }
     });
     let finalDict = {};
@@ -39,19 +41,20 @@ function fetchAllQualitiesIntoDict(registryData) {
 
 export function cookData(registryData, N) {
     let groupedInstitutions = Object.groupBy(registryData, v => v.owner_standardised);
-
-    let baseDict = fetchAllQualitiesIntoDict(registryData);
+    console.log(groupedInstitutions);
+    // let baseDict = fetchAllQualitiesIntoDict(registryData);
     let NMostRepresentedInstitutions = Object.entries(groupedInstitutions)
         .map(([key, value]) => {
             return {
                 name: key,
                 count: value.length,
-                qualities: value.reduce(countFunctionOccurences,{})
+                qualities: value.length > 0? value.reduce(countFunctionOccurences,{}): {}
             };
         })
         .sort((a, b) => b.count - a.count)
         .filter(v => v.name !== 'possessore ignoto')
         .slice(0, N);
+    console.log(NMostRepresentedInstitutions);
     let vs = NMostRepresentedInstitutions.flatMap(v => {
         return Object.entries(v.qualities).map(k => {
             return {
