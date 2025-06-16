@@ -82,15 +82,14 @@ export function cookDataInSurfaceArea(registryData, parcelData, N) {
         .sort((a, b) => b.count - a.count)
         .filter(v => v.name !== 'possessore ignoto')
         .slice(0, N);
-    console.log(NMostRepresentedInstitutions);
     let vs = NMostRepresentedInstitutions.flatMap(v => {
         return Object.entries(v.qualities).map(k => {
             return {
                 "name": v.name,
-                "count": k[1],
+                "surface": k[1],
                 "quality": k[0],
             }
         })
     });
-    return vs.filter(v => v.count > 2 && v.quality !== "");
+    return vs.filter(v => v.surface > 0 && v.quality !== "");
 }

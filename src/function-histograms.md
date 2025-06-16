@@ -25,7 +25,7 @@ const parcelData = FileAttachment("./data/venice_1808_landregister_geometries.ge
 ```js
 const plotWidth = 1200;
 const plotHeight = 750;
-const marginLeft = 1;
+const marginLeft = 50;
 const cookedData = cookData(registre, 10);
 const sBarChart = Plot.plot({
   width: plotWidth,
@@ -75,10 +75,7 @@ For the 10 standardised owners possessing the most amount of parcel, we display 
 
 
 ```js
-const plotWidth = 1200;
-const plotHeight = 750;
-const marginLeft = 1;
-const cookedDataSurface = cookDataInSurfaceArea(registre,parcelData, 10);
+const cookedDataSurface = cookDataInSurfaceArea(registre, parcelData, 10);
 const sBarChartSurface = Plot.plot({
   width: plotWidth,
   height: plotHeight,
@@ -95,9 +92,9 @@ const sBarChartSurface = Plot.plot({
   marks: [
     Plot.barY(cookedDataSurface, {
         x: "name",
-        y: "Amount of surface (m2)",
+        y: "surface",
         fill: "quality",
-        title: v => `${v.quality}: ${v.count.toFixed(1)}m2`,
+        title: v => `${v.quality}: ${v.surface.toFixed(1)}m2`,
         sort: {x: "-y"},
         tip: true
       }
@@ -111,5 +108,5 @@ const sBarChartSurface = Plot.plot({
   }
 });
 
-document.getElementById('barchart-surface-container').append(sBarChartSurface)
+document.getElementById('barchart-surface-container').append(sBarChartSurface);
 ```
