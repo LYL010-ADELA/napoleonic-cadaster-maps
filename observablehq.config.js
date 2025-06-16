@@ -18,6 +18,7 @@ export default {
         {name: "Average surface of Casa per parish", path: "/parish-average-casa-size"},
         {name: "Expropriations of private properties", path: "/expropriation-map"},
         {name: "Functions Histograms", path: "/function-histograms"},
+        {name: "Type of Geometry", path: "/geometry-type-maps"}
       ]
     }
   ],
