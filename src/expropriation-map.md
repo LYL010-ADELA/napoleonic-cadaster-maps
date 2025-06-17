@@ -82,7 +82,7 @@ document.getElementById("table-container-expropriation-ranking").append(table)
 </div>
 
 ```js
-const chart = Plot.barY(expropriationMap.tableGroupStolen, {x: "name", y: "surface"}).plot({marginLeft: 130});
+const chart = Plot.barY(expropriationMap.tableGroupStolen, {x: "name", y: "surface"}, Plot.axisX({label: null, lineWidth: 8, marginBottom: 40})).plot({marginLeft: 160, width:1000});
 document.getElementById("barchart-container-expropriation-ranking").append(chart);
 ```
 
@@ -115,7 +115,7 @@ document.getElementById("table-container-receive-ranking").append(table);
 </div>
 
 ```js
-const chartReceived = Plot.barX(expropriationMap.tableDataReceived, {y: "name", x: "surface"}).plot({marginLeft: 130});
+const chartReceived = Plot.barX(expropriationMap.tableDataReceived, {y: "name", x: "surface"}, Plot.axisY({label: null})).plot({marginLeft: 230, width:1000});
 document.getElementById("barchart-container-received-propriety").append(chartReceived);
 ```
 

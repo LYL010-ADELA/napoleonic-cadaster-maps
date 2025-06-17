@@ -7,7 +7,7 @@ if (L === undefined) console.error("L is undefined");
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "../plugins/leaflet-heat.js";
 import { html } from "htl";
-import { geometryRegistryMap, genereateBaseSommarioniBgLayers, displayOnlyOneValueAfterComma, getColorFromGradePointsArray } from "./common.js";
+import { geometryRegistryMap, genereateBaseSommarioniBgLayers, displayOnlyOneValueAfterComma, getColorFromGradePointsArray, cleanStdVal } from "./common.js";
 
 
 function addExpropriationDataOnParcelFeatures(feature, registryMap) {
@@ -255,7 +255,7 @@ export function createExpropriationParcelMap(mapContainer, parcelData, registryD
     tableGroupStolen = Object.entries(tableGroupStolen).map(([key, value]) => {
         let totalSurface = value.reduce((acc, curr) => acc + curr.surface, 0);
         return {
-            name: key,
+            name: cleanStdVal(key),
             surface: totalSurface
         };
     });

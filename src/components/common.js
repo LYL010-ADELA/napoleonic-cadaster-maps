@@ -12,6 +12,15 @@ export function randomCssColor(seed) {
     return `rgb(${r}, ${g}, ${b})`;
 }
 
+export function cleanStdVal(str) {
+    let val = str.toLowerCase();
+    if (val && val.length > 0) {
+        val = val.charAt(0).toUpperCase() + val.slice(1);
+    }
+    val = val.replace(/_/g, ' ');
+    return val;
+}
+
 export function displayOnlyOneValueAfterComma(value) {
     if (value) {
         let str = value.toString();
