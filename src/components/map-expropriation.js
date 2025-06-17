@@ -78,7 +78,6 @@ export function createExpropriationParishMap(mapContainer, parcelData, registryD
                 surface: value.reduce((acc, curr) => acc + curr.properties.area, 0)
             };
         });
-        console.log(tableParishStolen);
         let parishSurfaceMap = new Map();
         tableParishStolen.forEach(parish => {
             parishSurfaceMap.set(parish.name, parish.surface);
@@ -139,7 +138,6 @@ export function createExpropriationParishMap(mapContainer, parcelData, registryD
         legend.onAdd = function (map) {
             let div = L.DomUtil.create('div', 'info legend'),
                 grades = gradePointsColors.map(color => color[0]).reverse();
-                console.log(grades);
     
             // loop through our density intervals and generate a label with a colored square for each interval
             for (var i = 0; i < grades.length; i++) {
