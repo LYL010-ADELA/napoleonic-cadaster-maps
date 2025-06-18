@@ -87,6 +87,8 @@ document.getElementById("barchart-container-expropriation-ranking").append(chart
 ```
 
 
+### [[Most expropriated institutions Analysis]]
+
 ### Ranking of the institution receiving the most surface
 
 <!-- Create the tanble container -->
@@ -118,6 +120,8 @@ document.getElementById("table-container-receive-ranking").append(table);
 const chartReceived = Plot.barX(expropriationMap.tableDataReceived, {y: "name", x: "surface"}, Plot.axisY({label: null})).plot({marginLeft: 230, width:1000});
 document.getElementById("barchart-container-received-propriety").append(chartReceived);
 ```
+
+### [[ Institutions receiving most surface Analysis]]
 
 # Percentage of expropriated surface per parish delimitations:
 
@@ -162,3 +166,6 @@ const table = Inputs.table(parishMapComponents.tableData, {
 });
 document.getElementById("table-container-parish-expropriation-surface-ranking").append(table)
 ```
+
+
+### [[Expropriation density per parish Analysis]]

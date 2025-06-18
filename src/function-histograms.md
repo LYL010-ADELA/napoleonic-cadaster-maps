@@ -63,6 +63,8 @@ document.getElementById('barchart-container').append(sBarChart)
 ```
 
 
+### [[Qualities amount histogram Analysis]]
+
 # Napoleonic Cadaster - Functions Histograms (In m2 surface).
 
 For the 10 standardised owners possessing the most amount of parcel, we display the total amount of surface each of the function attributed to each of their possessed parcel amount to.
@@ -72,7 +74,6 @@ For the 10 standardised owners possessing the most amount of parcel, we display 
 <div id="barchart-surface-container" class="block-component"></div>
 <div id="barchart-surface-legend"></div>
 </div>
-
 
 ```js
 const cookedDataSurface = cookDataInSurfaceArea(registre, parcelData, 10);
@@ -110,3 +111,5 @@ const sBarChartSurface = Plot.plot({
 
 document.getElementById('barchart-surface-container').append(sBarChartSurface);
 ```
+
+### [[Qualities surface histogram Analysis]]

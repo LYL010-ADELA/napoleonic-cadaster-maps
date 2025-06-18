@@ -121,3 +121,5 @@ function generateParishMapFromGeometryMapSelection(){
 generateParishMapFromGeometryMapSelection();
 selector.onchange = generateParishMapFromGeometryMapSelection;
 ```
+
+### [[Surface of type of geometry Analysis]]

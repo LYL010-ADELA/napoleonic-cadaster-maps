@@ -20,8 +20,8 @@ import "./plugins/leaflet-heat.js";
 import {createParishCasaAverageSurfaceHeatMap } from "./components/map-parish.js";
 ```
 
-# Napoleonic Cadaster - Average size of "CASA" parcel per parish.
-The heatmap display per parish the average area of all parcels that have the "casa" (house) function. Smaller average values may denote a higher density of living, as is the case with the redest spot on the map, corresponding to the "Ghetto Nuovo", known for it relative high population density.
+# Napoleonic Cadaster - Average size of "HOME" parcel per parish.
+The heatmap display per parish the average area of all parcels that have the "home" function. Smaller average values may denote a higher density of living, as is the case with the redest spot on the map, corresponding to the "Ghetto Nuovo", known for it relative high population density.
 
 ```js
 const parishData = FileAttachment("./data/1740_redrawn_parishes_cleaned_wikidata_standardised.geojson").json();
@@ -52,6 +52,7 @@ window.highlightFeature = (name) => {
     // document.getElementById('map-container-casa-average-size-hm').scrollIntoView({"behavior":"smooth"});
 };
 ```
+
 <!-- Create the tanble container -->
 <div class="block-container">
 <div id="table-container-casa-surface-ranking"></div>
@@ -73,3 +74,5 @@ const table = Inputs.table(porzioneMapComponents.tableData, {
 });
 document.getElementById("table-container-casa-surface-ranking").append(table)
 ```
+
+### [[Average "CASA" size Analysis]]

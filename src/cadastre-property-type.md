@@ -36,12 +36,17 @@ const ownMapComponents = createMapAndLayers("map-container-ownership-type", geoj
 ```
 
 
+### [[Ownership Type Analysis]]
+
+
 ## Functions of parcel
 <div id="map-container-func-type" class="map-component"></div>
 
 ```js
 const funMapComponents = createMapAndLayers("map-container-func-type", geojson, registre, 'qualities_en', false);
 ```
+
+### [[Qualities (parcel function) Analysis]]
 
 
 ## Class of standardized owner
@@ -51,6 +56,7 @@ const funMapComponents = createMapAndLayers("map-container-func-type", geojson, 
 const funMapComponents = createMapAndLayers("map-container-own-class", geojson, registre, 'owner_standardised_class', true);
 ```
 
+### [[Class of standardized owner Analysis]]
 
 ## Type of owner
 <div id="map-container-own-type" class="map-component"></div>
@@ -59,6 +65,7 @@ const funMapComponents = createMapAndLayers("map-container-own-class", geojson, 
 const funMapComponents = createMapAndLayers("map-container-own-type", geojson, registre, 'owner_type_en', true);
 ```
 
+### [[Type of owner Analysis]]
 
 ## Owner right of use
 <div id="map-container-own-ros" class="map-component"></div>
@@ -66,6 +73,8 @@ const funMapComponents = createMapAndLayers("map-container-own-type", geojson, r
 ```js
 const funMapComponents = createMapAndLayers("map-container-own-ros", geojson, registre, 'owner_right_of_use_en', false);
 ```
+
+### [[Owner right of use Analysis]]
 
 
 ## old entity religious type
@@ -75,6 +84,9 @@ const funMapComponents = createMapAndLayers("map-container-own-ros", geojson, re
 const funMapComponents = createMapAndLayers("map-container-old-ent-reg-type", geojson, registre, 'old_religious_entity_type_en', true);
 ```
 
+
+### [[Old Entity Religious type Analysis]]
+
 # old owner type
 
 <div id="map-container-old-own-type" class="map-component"></div>
@@ -82,3 +94,6 @@ const funMapComponents = createMapAndLayers("map-container-old-ent-reg-type", ge
 ```js
 const funMapComponents = createMapAndLayers("map-container-old-own-type", geojson, registre, 'old_owner_type_en', true);
 ```
+
+
+### [[Old type of owner Analysis]]

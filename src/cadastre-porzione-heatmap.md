@@ -34,3 +34,5 @@ const registre = FileAttachment("./data/venice_1808_landregister_textual_entries
 // Call the creation function and store the results
 const porzioneMapComponents = createPorzioneHeatMap("map-container-porzione-hm", geojson, registre);
 ```
+
+### [[Porzione Heatmap Analysis]]
