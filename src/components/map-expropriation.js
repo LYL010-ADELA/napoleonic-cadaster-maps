@@ -217,12 +217,17 @@ export function createExpropriationParcelMap(mapContainer, parcelData, registryD
         geometryIdFeatureMap.set(String(feature.properties.geometry_id), featureLayer);
 
         let allRegistryEntries = registryMap.get(feature.properties.geometry_id);
-
-        let html = "<div class=>";
-        html += allRegistryEntries.map(entry =>  
-            {return `<strong>Previous owner:</strong> ${entry.old_entity_standardised}<br><strong>Owner in 1808:</strong> ${entry.owner_standardised}<br>`;}
-        ).reduce((acc, curr) => acc + curr, "");
-        html += "</div>";
+        allRegistryEntries = allRegistryEntries.filter(entry => entry["old_entity_standardised"] !== null)
+        let html = `<dl class="registry-list">`;
+        const entryFormatting = (old_owner, new_owner) => `<dt>Previous owner:</dt><dd>${old_owner}</dd><dt>Owner in 1808:</dt> <dd>${new_owner}</dd>`
+        for(let i = 0; i < allRegistryEntries.length; i++) {
+            const entry = allRegistryEntries[i];
+            if(allRegistryEntries.length > 1){
+                html += `<dt><h3>Registry Entry #${i+1}</h3></dt><dd></dd>`;
+            }
+            html += entryFormatting(entry.old_entity_standardised, entry.owner_standardised)
+        }
+        html += "</dl>";
         // Add a popup to the feature layer
         featureLayer.bindPopup(html, {'maxWidth':'500','maxHeight':'350','minWidth':'350'});
     }

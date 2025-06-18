@@ -39,9 +39,7 @@ toc: false
 
 ---
 
-## Next steps
-
-Look on the menu on the left to access specific data vizualisation on the Napoleonic cadaster.
+## Introduction text
 <!-- 
 Here are some ideas of things you could try…
 

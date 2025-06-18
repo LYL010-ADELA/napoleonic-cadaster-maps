@@ -16,6 +16,19 @@
   --gray-11: #222222;
   --gray-12: #0a0a0a;
 
+  --accent-1: #f5f3ff;
+  --accent-2: #f3f0ff;
+  --accent-3: #e3dbff;
+  --accent-4: #d4c7ff;
+  --accent-5: #bda0ff;
+  --accent-6: #8b5cf6;
+  --accent-7: #7c3aed;
+  --accent-8: #704cc5;
+  --accent-9: #5a3d9e;
+  --accent-10: #4a2f87;
+  --accent-11: #3f2477;
+  --accent-12: #2e1065;
+
   --border-radius: 6px;
   --border-radius-round: 9999px;
   --border-color: var(--gray-5);
@@ -30,6 +43,21 @@ body {
     font: var(--sans-serif);
 } */
 
+
+
+/* * 
+ * overloading some observable default styles
+ * TODO: make it actually overload the thing.
+ */
+.observable-hq-sidebar {
+  padding-left: 1em;
+  width: 300px;
+}
+.observablehq-link .observablehq-link-active {
+  color: var(--accent-7);
+  text-decoration: none;
+}
+
 a {
     cursor:pointer;
     /* color: var(--theme-foreground-focus); */
@@ -41,7 +69,9 @@ a {
   cursor: pointer;
 }
 
-
+tr:hover{
+  background-color: var(--gray-2);
+}
 
 dl {
   color: var(--text-secondary);
@@ -138,3 +168,4 @@ dl {
     margin-right: 8px;
     opacity: 0.7;
 }
+

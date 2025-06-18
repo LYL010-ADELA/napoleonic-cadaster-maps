@@ -57,7 +57,7 @@ This is also handy in order to compute statistics regarding urban occupation of 
 ```js
 const selector = document.getElementById("selector-geo-type");
 //Create array of options to be added
-const geoTypes = ["building", "street", "courtyard", "water", "sottoportico"];
+const geoTypes = ["building", "street", "courtyard", "sottoportico"];
 
 //Create and append the options
 for (var i = 0; i < geoTypes.length; i++) {
