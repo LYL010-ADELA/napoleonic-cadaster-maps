@@ -65,7 +65,7 @@ These terms reflect the unique spatial vocabulary of Venice in the early 19th ce
 The classification allows users to filter and explore the city’s spatial organization by function, revealing not only places of residence and commerce, but also religious, civic, and infrastructural uses distributed across the urban landscape.
 
 
-## Class of Standardized Owner – Map of Ownership Categories in 1808
+## Class of current (1808) Standardized Owner 
 <div id="map-container-own-class" class="map-component"></div>
 
 ```js
@@ -134,3 +134,10 @@ const funMapComponents = createMapAndLayers("map-container-old-own-type", geojso
 
 
 ### [[Old type of owner Analysis]] -->
+
+## Class of previous standardized Owner 
+<div id="map-container-old-class-own" class="map-component"></div>
+
+```js
+const funMapComponents = createMapAndLayers("map-container-old-class-own", geojson, registre, 'old_entity_standardised_class', true);
+```
