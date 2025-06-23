@@ -20,8 +20,11 @@ import "./plugins/leaflet-heat.js";
 import {createParishGeometryTypeMap, createGeometryTypeColoredMap } from "./components/map-geometry-type.js";
 ```
 
-# Napoleonic Cadaster - types of geometries.
-On the cadastral map, each shape drawn was filled with a color that denotes the type of the current cadastral object. All pink geometries are building, all the blue denotes body of water, orange are subporch, white are the street and the beige are courtyard of building. When the cadastral map of the register was digitized, this information was stored directly on the geometrical feature, allowing the following digital twin of the cadastral map to be drawn 
+# Type of Geometry.
+On the cadastral map, each delineated shape was filled with a specific color indicating the type of cadastral object it represents. This graphic design was expressly indicated in the [Recueil Methodique](https://gallica.bnf.fr/ark:/12148/bpt6k96475008.texteImage), which all administrations under French administration were required to follow.
+
+Buildings are rendered in pink, water (canals) in blue, subporches in orange, streets in white, and courtyards in beige. During the digitization of the cadastral register, this typological information was embedded directly within the geometric features, enabling the creation of a faithful digital twin of the original cadastral map.
+
 
 ```js
 const parishData = FileAttachment("./data/1740_redrawn_parishes_cleaned_wikidata_standardised.geojson").json();
@@ -37,7 +40,7 @@ const parcelData = FileAttachment("./data/venice_1808_landregister_geometries.ge
 const allGeoTypeMapComponents = createGeometryTypeColoredMap("map-container-geo-type", parcelData);
 ```
 
-This is also handy in order to compute statistics regarding urban occupation of the city of venice. Select the geometry type from the dropdown menue below to display the total surface of this geometry type, as well as a map and ranking of the prevalence of such a data in the different parish zones of Venice.
+_This is also handy in order to compute statistics regarding urban occupation of the city of venice. Select the geometry type from the dropdown menue below to display the total surface of this geometry type, as well as a map and ranking of the prevalence of such a data in the different parish zones of Venice._
 
 <select id="selector-geo-type"></select>
 
@@ -121,5 +124,3 @@ function generateParishMapFromGeometryMapSelection(){
 generateParishMapFromGeometryMapSelection();
 selector.onchange = generateParishMapFromGeometryMapSelection;
 ```
-
-### [[Surface of type of geometry Analysis]]

@@ -20,8 +20,7 @@ import "./plugins/leaflet-heat.js";
 import {createParishCasaAverageSurfaceHeatMap } from "./components/map-parish.js";
 ```
 
-# Napoleonic Cadaster - Average size of "HOME" parcel per parish.
-The heatmap display per parish the average area of all parcels that have the "home" function. Smaller average values may denote a higher density of living, as is the case with the redest spot on the map, corresponding to the "Ghetto Nuovo", known for it relative high population density.
+# Average surface of “house” function per parish.
 
 ```js
 const parishData = FileAttachment("./data/1740_redrawn_parishes_cleaned_wikidata_standardised.geojson").json();
@@ -75,4 +74,10 @@ const table = Inputs.table(porzioneMapComponents.tableData, {
 document.getElementById("table-container-casa-surface-ranking").append(table)
 ```
 
-### [[Average "CASA" size Analysis]]
+This map visualizes the **average and median parcel surface area by parish**, calculated exclusively from parcels where the **term “house”** appears in the cadastral “Quality” field. This filtering ensures that the analysis focuses specifically on **residential properties**, excluding warehouses, workshops, religious buildings, and other non-domestic uses. The results highlight notable contrasts across the city.
+
+An analysis of **median parcel area**, excluding extreme high and low values, highlights several parishes where the **residential fabric is notably dense**, composed of **many small housing plots**. These **Compact urban zones** include the **Ghetto districts** (Ghetto Nuovo, Vecchio, and Nuovissimo), the **Realtina area**, and the **central parishes** of **San Luca** and **San Zeminian**. Another relevant example is the **western offshoot of San Nicolò** (now known as Santa Marta), which also exhibits this pattern. These parishes likely reflect **working-class or modest residential zones**, where land subdivision and space optimization resulted in smaller, tightly packed parcels.
+
+In contrast, **parishes with a smaller number of larger residential plots**—such as **San Marco or Santa Croce**—reveal a different urban dynamic. These areas likely contain **palatial or patrician dwellings**, or large properties with extensive open spaces, gardens, or courtyards, resulting in higher median and average surface values.
+
+It is important to note potential **statistical biases**, especially in **small parishes** where a single large estate may skew the results. For example, in **San Boldo**, the presence of Palazzo Civran, a substantial housing parcel, disproportionately raises the average surface area per parcel, despite the limited number of residential units in the parish.
