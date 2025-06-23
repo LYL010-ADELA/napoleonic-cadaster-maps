@@ -1,20 +1,12 @@
 // Explicit import of leaflet to avoid issues with the Leaflet.heat plugin
 import L from "npm:leaflet";
-import {geometryRegistryMap, registryListToHTML, genereateBaseSommarioniBgLayers} from "./common.js";
+import {geometryRegistryMap, registryListToHTML, genereateBaseSommarioniBgLayers, cleanStdVal} from "./common.js";
 
 if (L === undefined) console.error("L is undefined");
 
 // Leaflet.heat: https://github.com/Leaflet/Leaflet.heat/
 import "../plugins/leaflet-heat.js";
 
-function cleanStdVal(str) {
-    let val = str.toLowerCase();
-    if (val && val.length > 0) {
-        val = val.charAt(0).toUpperCase() + val.slice(1);
-    }
-    val = val.replace(/_/g, ' ');
-    return val;
-}
 
 
 // Create Map and Layer - Runs Once
@@ -57,7 +49,7 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
     bgLayerList["Cadastral Board"].addTo(map);
     let registryMap = geometryRegistryMap(registryData);
     //filtering the data to keep only geometries referenced in the registry (i.e. the ones having a geometry_id value)
-    let feats = geojsonData.features.filter(feature => feature.properties.geometry_id && feature.properties.parcel_number)
+    let feats = geojsonData.features.filter(feature => feature.properties.geometry_id && feature.properties.parcel_number);
     // then fetching the value of "ownership_types" from the registry and adding them to the properties of the features
     geojsonData.features = feats.map(feature => {
         const geometry_id = String(feature.properties.geometry_id);
@@ -82,16 +74,14 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
             feature.properties[registryField] = values;
         }
         return feature;
-    }).filter(feature => feature.properties[registryField])
-
+    }).filter(feature => feature.properties[registryField]);
     let mapLayerGroups = {};
-
     // pop up needs to be generated dyinamically based on the current selected standard value, to only display registry entries that match the current selected standard value
     function onPopupClick(e) {
         // Get the clicked feature layer
         const featureLayer = e.target;
         // Get the geometry_id from the feature properties
-        const geometryId = featureLayer.feature.properties.geometry_id;
+        const geometryId = String(featureLayer.feature.properties.geometry_id);
         const allRegistryEntries = registryMap.get(geometryId);
         const currSelectedStdValues = Object.entries(layerControl.getOverlays()).filter(sel => sel[1]).map(v => v[0]);
 
@@ -116,6 +106,8 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
             }
             return false;
         }
+        // for debugging purposes
+        // const wayId = featureLayer.feature.properties.id;
 
         let html = registryListToHTML(allRegistryEntries.filter(filterEntrysByStdValue))
         // Add a popup to the feature layer

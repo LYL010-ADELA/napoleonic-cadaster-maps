@@ -91,7 +91,7 @@ Together, these layers offer a powerful means to study the redistribution of urb
 <div id="map-container-own-type" class="map-component"></div>
 
 ```js
-const funMapComponents = createMapAndLayers("map-container-own-type", geojson, registre, 'owner_type_en', true);
+const funMapComponents = createMapAndLayers("map-container-own-type", geojson, registre, 'owner_type', true);
 ```
 This map visualizes cadastral parcels in 1808 according to the **typology of ownership**, categorized as **Religious**, **Secular**, or **Secular-Religious**. These categories reflect both the institutional affiliations and the intended function of each property.
 * **Religious** parcels include churches, convents, and associated buildings that retained their religious function or were still owned by clergy or religious orders.
@@ -123,17 +123,6 @@ Historical analysis of the data reveals that the distinction between these terms
 
 Moreover, the use of these titles in 1808 does **not reflect a gendered division** as in modern usage. While today "convent" is typically associated with female religious orders and "monastery" with male ones, this distinction does not hold in the cadastral documentation from early 19th-century Venice. The inconsistency in terminology offers important insights into both the **linguistic habits** and the **administrative practices** of the time.
 
-<!-- 
-# old owner type
-
-<div id="map-container-old-own-type" class="map-component"></div>
-
-```js
-const funMapComponents = createMapAndLayers("map-container-old-own-type", geojson, registre, 'old_owner_type_en', true);
-```
-
-
-### [[Old type of owner Analysis]] -->
 
 ## Class of previous standardized Owner 
 <div id="map-container-old-class-own" class="map-component"></div>
