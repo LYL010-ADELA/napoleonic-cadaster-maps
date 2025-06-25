@@ -118,6 +118,9 @@ export function createMapAndLayers(mapContainer, geojsonData, registryData, regi
 
         //does layerGroup already exist? if not create it and add to map
         let values = feature.properties[registryField];
+        if(values.length === 0){
+            values = [""];
+        }
         for (let i = 0; i < values.length; i++) {
             let value = values[i];
             if (value === ""){
