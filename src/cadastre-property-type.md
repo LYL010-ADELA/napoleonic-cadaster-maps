@@ -110,7 +110,7 @@ In the cadastral records, ecclesiastical owners rarely appear without qualificat
 This typology reflects a complex system of **ecclesiastical privileges and endowments**, where properties were not simply assigned to institutions, but linked to **offices, liturgical roles, or charitable responsibilities**. Such information can support **socio-economic and institutional research**, especially when examining how wealth and urban space were managed by religious actors under both the Republic and the Napoleonic administration.
 In addition to religious categories, the map also includes **secular owner rights**, including private individuals, institutions, and public entities, allowing users to compare the **internal diversity of legal and administrative status** across the city’s property landscape.
 
-
+## Religious types
 <!-- ## old entity religious type -->
 <div id="map-container-old-ent-reg-type" class="map-component"></div>
 
