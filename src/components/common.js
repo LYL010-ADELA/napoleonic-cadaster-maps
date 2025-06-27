@@ -54,6 +54,21 @@ export function geometryRegistryMap(registryData) {
     return geometryRegistryMap;
 }
 
+export function generateSpectralColorMap(valueList) {
+    // Generate a spectral color map based on the valueList
+    // return it as a map from the value to the color
+    const colorMap = new Map();
+    const N = valueList.length;
+    for (let i = 0; i < N; i++) {
+        // Evenly distribute hues around the color wheel (0-360)
+        const hue = Math.round((i * 360) / N);
+        // Use full saturation and 50% lightness for vivid colors
+        const color = `hsl(${hue}, 100%, 50%)`;
+        colorMap.set(valueList[i], color);
+    }
+    return colorMap;
+}
+
 export function genereateBaseSommarioniBgLayers(){
     const noLayer = L.tileLayer("", {
         attribution: ''
