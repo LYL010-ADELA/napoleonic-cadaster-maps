@@ -1,9 +1,9 @@
 // See https://observablehq.com/framework/config for documentation.
 export default {
-  // The app’s title; used in the sidebar and webpage titles.
+  // The app's title; used in the sidebar and webpage titles.
   title: "Napoleonic Cadaster - Thematic Maps",
 
-  // The pages and sections in the sidebar. If you don’t specify this option,
+  // The pages and sections in the sidebar. If you don't specify this option,
   // all pages will be listed in alphabetical order. Listing pages explicitly
   // lets you organize them into sections and have unlisted pages.
   pages: [
@@ -12,10 +12,11 @@ export default {
       pages: [
         {name: "\"Portion Heatmap\" - Fragmentation of Domestic Space in 1808 Venice", path: "/cadastre-porzione-heatmap"},
         {name: "Parcel's functions and standardised classes", path: "/cadastre-property-type"},
-        {name: "Average surface of “house” function per parish", path: "/parish-average-casa-size"},
+        {name: "Average surface of house function per parish", path: "/parish-average-casa-size"},
         {name: "Expropriations of private properties", path: "/expropriation-map"},
         {name: "Functions of Expropriated Parcels by Receiving Institution", path: "/function-histograms"},
-        {name: "Type of Geometry", path: "/geometry-type-maps"}
+        {name: "Type of Geometry", path: "/geometry-type-maps"},
+        {name: "5-Minute Walking Accessibility Analysis", path: "/walkability-analysis"}
       ]
     }
   ],

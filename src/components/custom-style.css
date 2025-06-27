@@ -169,3 +169,260 @@ dl {
     opacity: 0.7;
 }
 
+/* Enhanced walkability analysis styles */
+.enhanced-walkability-popup {
+  font-family: Arial, sans-serif;
+  max-height: 400px;
+  overflow-y: auto;
+  font-size: 12px;
+}
+
+.enhanced-walkability-popup .popup-section {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.enhanced-walkability-popup .popup-section:last-child {
+  border-bottom: none;
+}
+
+.enhanced-walkability-popup h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.enhanced-walkability-popup h5 {
+  margin: 0 0 8px 0;
+  color: #555;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.enhanced-walkability-popup p {
+  margin: 4px 0;
+  font-size: 12px;
+}
+
+.enhanced-walkability-popup ul {
+  margin: 5px 0;
+  padding-left: 15px;
+  font-size: 11px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.enhanced-walkability-popup li {
+  margin: 1px 0;
+  line-height: 1.3;
+}
+
+/* 为对象列表添加更好的样式 */
+.enhanced-walkability-popup .popup-section ul {
+  background-color: #f9f9f9;
+  border-radius: 3px;
+  padding: 8px 15px;
+  margin: 5px 0;
+}
+
+.enhanced-walkability-popup .popup-section p {
+  margin: 3px 0;
+  font-size: 12px;
+}
+
+/* Indicator control panel */
+.indicator-control {
+  background: white;
+  padding: 8px;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  max-width: 280px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.indicator-control h4 {
+  margin: 0 0 6px 0;
+  color: #333;
+  font-size: 14px;
+  text-align: center;
+}
+
+.indicator-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.indicator-group {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 6px;
+  margin-bottom: 6px;
+  background-color: #f9f9f9;
+}
+
+.indicator-group h5 {
+  margin: 0 0 4px 0;
+  color: #444;
+  font-size: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 2px;
+}
+
+.indicator-group label {
+  display: flex;
+  align-items: center;
+  margin: 2px 0;
+  font-size: 11px;
+  cursor: pointer;
+  color: #555;
+  line-height: 1.2;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.indicator-group input[type="radio"] {
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.indicator-group label:hover {
+  color: #333;
+  background-color: #e6f3ff;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* 确保文本不会过长时的处理 */
+.indicator-group label span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Enhanced legend styles */
+.legend {
+  line-height: 18px;
+  color: #555;
+  background: white;
+  background: rgba(255,255,255,0.95);
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  max-width: 220px;
+}
+
+.legend h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+/* Enhanced stats panel */
+.stats-panel {
+  padding: 10px;
+  font-size: 12px;
+  background: white;
+  background: rgba(255,255,255,0.9);
+  border-radius: 5px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  max-width: 200px;
+  min-width: 180px;
+}
+
+.stats-panel h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.stats-panel p {
+  margin: 3px 0;
+  color: #555;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .indicator-control {
+      max-width: 260px;
+      font-size: 11px;
+  }
+  
+  .enhanced-walkability-popup {
+      font-size: 11px;
+  }
+  
+  .legend, .stats-panel {
+      font-size: 11px;
+  }
+}
+
+/* 调整控件样式避免重叠 */
+.leaflet-top.leaflet-left {
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+}
+
+.leaflet-top.leaflet-right {
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+/* 为图层控制器添加间距 */
+.leaflet-control-layers {
+    margin-bottom: 10px;
+    max-height: 280px;
+    overflow-y: auto;
+    background: rgba(255,255,255,0.95);
+    padding: 8px;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+}
+
+/* 确保控件不重叠 */
+.leaflet-top.leaflet-left .leaflet-control:first-child {
+    margin-top: 10px;
+}
+
+.leaflet-top.leaflet-right .leaflet-control:first-child {
+    margin-top: 10px;
+}
+
+.leaflet-bottom.leaflet-left .leaflet-control:first-child {
+    margin-bottom: 10px;
+}
+
+.leaflet-bottom.leaflet-right .leaflet-control:first-child {
+    margin-bottom: 10px;
+}
+
+/* 热力图切换按钮样式 */
+.layer-toggle-btn {
+    background: #4CAF50 !important;
+    color: white !important;
+    border: none !important;
+    padding: 4px 8px !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    font-size: 10px !important;
+    transition: background-color 0.3s !important;
+}
+
+.layer-toggle-btn:hover {
+    background: #45a049 !important;
+}
